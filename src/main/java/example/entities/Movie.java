@@ -1,7 +1,6 @@
-package example.Entities;
+package example.entities;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Movie {
@@ -10,6 +9,8 @@ public class Movie {
     private String genre;
     private String country;
     private String releaseDate;
+
+    private List<Actor> actors;
     private int idDirector;
 
     public Movie(){}
@@ -22,6 +23,14 @@ public class Movie {
         this.releaseDate = releaseDate;
 
         this.idDirector = idDirector;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
     }
 
     public int getIdDirector() {
@@ -79,25 +88,23 @@ public class Movie {
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", country='" + country + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", actors=" + actors +
                 ", idDirector=" + idDirector +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return id == movie.id && idDirector == movie.idDirector
-                && title.equals(movie.title) && genre.equals(movie.genre) &&
-                country.equals(movie.country) && releaseDate.equals(movie.releaseDate);
+        return id == movie.id && idDirector == movie.idDirector && title.equals(movie.title) && genre.equals(movie.genre) && country.equals(movie.country) && releaseDate.equals(movie.releaseDate) && actors.equals(movie.actors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, genre, country, releaseDate, idDirector);
+        return Objects.hash(id, title, genre, country, releaseDate, actors, idDirector);
     }
 }
 

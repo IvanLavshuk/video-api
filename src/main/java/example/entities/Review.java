@@ -1,4 +1,4 @@
-package example.Entities;
+package example.entities;
 
 import java.util.Objects;
 
@@ -6,15 +6,15 @@ public class Review {
     private int id;
     private double rating;
     private String text;
-    private int  idMovie;
-    private int  idUser;
+    private Movie idMovie;
+    private User idUser;
 
     public Review(){}
-    public Review( double rating, String text, int idMovie, int idUser) {
+    public Review( double rating, String text, Movie Movie, User idUser) {
 
         this.rating = rating;
         this.text = text;
-        this.idMovie = idMovie;
+        this.idMovie = Movie;
         this.idUser = idUser;
     }
 
@@ -42,20 +42,33 @@ public class Review {
         this.text = text;
     }
 
-    public int getIdMovie() {
+    public Movie getMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(int idMovie) {
+    public void setMovie(Movie idMovie) {
         this.idMovie = idMovie;
     }
 
-    public int getIdUser() {
+    public User getUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setUser(User idUser) {
         this.idUser = idUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return id == review.id && Double.compare(review.rating, rating) == 0 && text.equals(review.text) && idMovie.equals(review.idMovie) && idUser.equals(review.idUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, rating, text, idMovie, idUser);
     }
 
     @Override
@@ -67,19 +80,5 @@ public class Review {
                 ", idMovie=" + idMovie +
                 ", idUser=" + idUser +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return id == review.id && Double.compare(review.rating, rating) == 0 &&
-                idMovie == review.idMovie && idUser == review.idUser && text.equals(review.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, rating, text, idMovie, idUser);
     }
 }

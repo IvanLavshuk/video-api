@@ -1,6 +1,5 @@
-package example.Entities;
+package example.entities;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Director {
