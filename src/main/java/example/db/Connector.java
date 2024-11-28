@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connector {
-//вынести в проперти или делать инициализаци и инит методе сервлета
+
     private static final Logger LOG = LoggerFactory.getLogger(Connector.class);
     private static final String URL = "jdbc:mysql://localhost:3306/videolibrary";
     private static final String USER = "root";

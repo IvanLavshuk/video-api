@@ -28,7 +28,6 @@ public class UserService {
         user.setSurname(surname);
         user.setName(name);
         user.setEmail(email);
-
         userDAO.create(user);
     }
 
