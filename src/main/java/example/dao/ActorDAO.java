@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActorDAO extends DAO<Actor> {
-    private static final Logger LOG = LoggerFactory.getLogger(ActorDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class);
 
     @Override
     public void create(Actor actor) {
@@ -28,7 +28,7 @@ public class ActorDAO extends DAO<Actor> {
             }
 
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
         }
 
     }
@@ -54,7 +54,7 @@ public class ActorDAO extends DAO<Actor> {
             }
 
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -80,7 +80,7 @@ public class ActorDAO extends DAO<Actor> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -96,7 +96,7 @@ public class ActorDAO extends DAO<Actor> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 

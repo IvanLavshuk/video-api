@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDAO extends DAO<Movie> {
-    private static final Logger LOG = LoggerFactory.getLogger(MovieDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(MovieDAO.class);
 
     @Override
     public void create(Movie movie) {
@@ -30,7 +30,7 @@ public class MovieDAO extends DAO<Movie> {
 
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -59,7 +59,7 @@ public class MovieDAO extends DAO<Movie> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -87,7 +87,7 @@ public class MovieDAO extends DAO<Movie> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -101,7 +101,7 @@ public class MovieDAO extends DAO<Movie> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 

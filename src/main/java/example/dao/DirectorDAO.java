@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DirectorDAO extends DAO<Director> {
-    private static final Logger LOG = LoggerFactory.getLogger(DirectorDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(DirectorDAO.class);
 
     @Override
     public void create(Director director) {
@@ -28,7 +28,7 @@ public class DirectorDAO extends DAO<Director> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -56,7 +56,7 @@ public class DirectorDAO extends DAO<Director> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -83,7 +83,7 @@ public class DirectorDAO extends DAO<Director> {
 
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -99,7 +99,7 @@ public class DirectorDAO extends DAO<Director> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 

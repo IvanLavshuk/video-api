@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ReviewDAO extends DAO<Review> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReviewDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReviewDAO.class);
 
     @Override
     public void create(Review review) {
@@ -28,7 +28,7 @@ public class ReviewDAO extends DAO<Review> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -57,7 +57,7 @@ public class ReviewDAO extends DAO<Review> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -84,7 +84,7 @@ public class ReviewDAO extends DAO<Review> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -100,7 +100,7 @@ public class ReviewDAO extends DAO<Review> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
     }

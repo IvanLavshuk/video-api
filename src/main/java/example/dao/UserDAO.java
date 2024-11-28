@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserDAO extends DAO<User> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
     @Override
     public void create(User user) {
         String query = "INSERT INTO users (name,surname,password,email) VALUES(?,?,?,?)";
@@ -27,7 +27,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         }catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -55,7 +55,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         }catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -71,7 +71,6 @@ public class UserDAO extends DAO<User> {
                 try(ResultSet resultSet = preparedStatement.executeQuery(query)){
                     List<User> users = new ArrayList<>();
                     while (resultSet.next()) {
-
                         User user = new User();
                         user.setId(resultSet.getInt("id_user"));
                         user.setName(resultSet.getString("name"));
@@ -84,7 +83,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         }catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -100,7 +99,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -128,7 +127,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
 

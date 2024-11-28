@@ -1,6 +1,5 @@
 package example.db;
 
-import example.dao.ActorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 
 public class Connector {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Connector.class);
+    private static final Logger logger = LoggerFactory.getLogger(Connector.class);
     private static final String URL = "jdbc:mysql://localhost:3306/videolibrary";
     private static final String USER = "root";
     private static final String PASSWORD = "ROOT";
@@ -19,7 +18,7 @@ public class Connector {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            LOG.error("Error getting connection: {}", e.getMessage());
+            logger.error("Error getting connection: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
