@@ -1,7 +1,7 @@
-package example.dao;
+package bsu.rfe.lavshuk.videoArchive.dao;
 
-import example.db.Connector;
-import example.entities.User;
+import bsu.rfe.lavshuk.videoArchive.entity.User;
+import bsu.rfe.lavshuk.videoArchive.db.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,12 @@ public class UserDAO extends DAO<User> {
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
     @Override
     public void create(User user) {
+
+        if(user == null){
+            logger.error("Object :{} is null",user.getClass().getSimpleName());
+            throw new RuntimeException();
+        }
+
         String query = "INSERT INTO users (name,surname,password,email) VALUES(?,?,?,?)";
         try (Connection connection = Connector.getConnection()){
             try(PreparedStatement preparedStatement = connection.prepareStatement(query)){

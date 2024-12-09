@@ -1,4 +1,4 @@
-package example.entities;
+package bsu.rfe.lavshuk.videoArchive.entity;
 
 import java.util.Objects;
 

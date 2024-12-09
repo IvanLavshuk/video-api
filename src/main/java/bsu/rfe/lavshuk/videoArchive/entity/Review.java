@@ -1,4 +1,4 @@
-package example.entities;
+package bsu.rfe.lavshuk.videoArchive.entity;
 
 import java.util.Objects;
 
@@ -6,16 +6,16 @@ public class Review {
     private int id;
     private double rating;
     private String text;
-    private Movie idMovie;
-    private User idUser;
+    private Movie movie;
+    private User user;
 
     public Review(){}
     public Review( double rating, String text, Movie Movie, User idUser) {
 
         this.rating = rating;
         this.text = text;
-        this.idMovie = Movie;
-        this.idUser = idUser;
+        this.movie = Movie;
+        this.user = idUser;
     }
 
     public int getId() {
@@ -43,19 +43,19 @@ public class Review {
     }
 
     public Movie getMovie() {
-        return idMovie;
+        return movie;
     }
 
     public void setMovie(Movie idMovie) {
-        this.idMovie = idMovie;
+        this.movie = idMovie;
     }
 
     public User getUser() {
-        return idUser;
+        return user;
     }
 
     public void setUser(User idUser) {
-        this.idUser = idUser;
+        this.user = idUser;
     }
 
     @Override
@@ -63,12 +63,12 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return id == review.id && Double.compare(review.rating, rating) == 0 && text.equals(review.text) && idMovie.equals(review.idMovie) && idUser.equals(review.idUser);
+        return id == review.id && Double.compare(review.rating, rating) == 0 && text.equals(review.text) && movie.equals(review.movie) && user.equals(review.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rating, text, idMovie, idUser);
+        return Objects.hash(id, rating, text, movie, user);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class Review {
                 "id=" + id +
                 ", rating=" + rating +
                 ", text='" + text + '\'' +
-                ", idMovie=" + idMovie +
-                ", idUser=" + idUser +
+                ", idMovie=" + movie +
+                ", idUser=" + user +
                 '}';
     }
 }

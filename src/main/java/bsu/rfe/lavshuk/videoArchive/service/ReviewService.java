@@ -1,8 +1,9 @@
-package example.services;
+package bsu.rfe.lavshuk.videoArchive.service;
 
-import example.dao.ReviewDAO;
-import example.entities.*;
-import example.entities.Review;
+import bsu.rfe.lavshuk.videoArchive.dao.ReviewDAO;
+import bsu.rfe.lavshuk.videoArchive.entity.Movie;
+import bsu.rfe.lavshuk.videoArchive.entity.User;
+import bsu.rfe.lavshuk.videoArchive.entity.Review;
 
 public class ReviewService {
     private volatile static ReviewService instance;

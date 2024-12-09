@@ -1,7 +1,7 @@
-package example.dao;
+package bsu.rfe.lavshuk.videoArchive.dao;
 
-import example.db.Connector;
-import example.entities.Movie;
+import bsu.rfe.lavshuk.videoArchive.entity.Movie;
+import bsu.rfe.lavshuk.videoArchive.db.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,10 @@ public class MovieDAO extends DAO<Movie> {
 
     @Override
     public void create(Movie movie) {
-
+        if(movie == null){
+            logger.error("Object :{} is null",movie.getClass().getSimpleName());
+            throw new RuntimeException();
+        }
         String query = "INSERT INTO movies (title,genre,country,release_date,id_director) VALUES(?,?,?,?,?)";
         try (Connection connection = Connector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

@@ -1,7 +1,7 @@
-package example.services;
+package bsu.rfe.lavshuk.videoArchive.service;
 
-import example.dao.*;
-import example.entities.Actor;
+import bsu.rfe.lavshuk.videoArchive.dao.ActorDAO;
+import bsu.rfe.lavshuk.videoArchive.entity.Actor;
 
 public class ActorService {
     private volatile static ActorService instance;

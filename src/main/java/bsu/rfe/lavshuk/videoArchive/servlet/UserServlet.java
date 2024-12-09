@@ -1,6 +1,6 @@
-package example.servlets;
+package bsu.rfe.lavshuk.videoArchive.servlet;
 
-import example.services.UserService;
+import bsu.rfe.lavshuk.videoArchive.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,14 +16,14 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        super.init();
+
         System.out.println("Init UserServlet");
         userService =  UserService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+
     }
 
     @Override

@@ -1,11 +1,9 @@
-package example.dao;
+package bsu.rfe.lavshuk.videoArchive.dao;
 
-
-import example.db.Connector;
-import example.entities.Director;
+import bsu.rfe.lavshuk.videoArchive.entity.Actor;
+import bsu.rfe.lavshuk.videoArchive.db.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,74 +11,81 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectorDAO extends DAO<Director> {
-    private static final Logger logger = LoggerFactory.getLogger(DirectorDAO.class);
+
+public class ActorDAO extends DAO<Actor> {
+    private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class.getSimpleName());
+
+    public static void main(String[] args) {
+        logger.info("HELLO");
+    }
 
     @Override
-    public void create(Director director) {
+    public void create(Actor actor) {
+        if(actor==null){
+            logger.error("Object :{} is null",actor.getClass().getSimpleName());
+            throw new RuntimeException();
+        }
 
-        String query = "INSERT INTO directors (name,surname,birthdate) VALUES(?,?,?)";
+        String query = "INSERT INTO actors (name,surname,birthdate) VALUES(?,?,?)";
         try (Connection connection = Connector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, director.getName());
-                preparedStatement.setString(2, director.getSurname());
-                preparedStatement.setString(3, director.getBirthdate());
-                preparedStatement.executeUpdate();
+                preparedStatement.setString(1, actor.getName());
+                preparedStatement.setString(2, actor.getSurname());
+                preparedStatement.setString(3, actor.getBirthdate());
+
             }
+
         } catch (SQLException e) {
             logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
-            throw new RuntimeException(e);
         }
 
     }
 
     @Override
-    public Director getById(int id) {
-        String query = "SELECT * FROM directors WHERE id_director=?";
+    public Actor getById(int id) {
+        String query = "SELECT * FROM actors WHERE id_actor=?";
 
         try (Connection connection = Connector.getConnection()) {
-
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
-
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    Director director = new Director();
-                    director.setId(id);
+                    Actor actor = new Actor();
+                    actor.setId(id);
                     while (resultSet.next()) {
-                        director.setId(resultSet.getInt("id_director"));
-                        director.setName(resultSet.getString("name"));
-                        director.setSurname(resultSet.getString("surname"));
-                        director.setBirthdate(resultSet.getString("birthdate"));
+                        actor.setId(resultSet.getInt("id_actor"));
+                        actor.setName(resultSet.getString("name"));
+                        actor.setSurname(resultSet.getString("surname"));
+                        actor.setBirthdate(resultSet.getString("birthdate"));
                     }
-                    return director;
+                    return actor;
                 }
             }
+
         } catch (SQLException e) {
             logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
-    public List<Director> getAll() {
+    public List<Actor> getAll() {
+        String query = "SELECT* FROM actors";
 
-        String query = "SELECT* FROM directors";
         try (Connection connection = Connector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
-                    List<Director> directors = new ArrayList<>();
+                    List<Actor> actors = new ArrayList<>();
                     while (resultSet.next()) {
-                        Director director = new Director();
-                        director.setId(resultSet.getInt("id_director"));
-                        director.setName(resultSet.getString("name"));
-                        director.setSurname(resultSet.getString("surname"));
-                        director.setBirthdate(resultSet.getString("birthdate"));
-                        directors.add(director);
-
+                        Actor actor = new Actor();
+                        actor.setId(resultSet.getInt("id_actor"));
+                        actor.setName(resultSet.getString("name"));
+                        actor.setSurname(resultSet.getString("surname"));
+                        actor.setBirthdate(resultSet.getString("birthdate"));
+                        actors.add(actor);
                     }
-                    return directors;
+                    return actors;
                 }
-
             }
         } catch (SQLException e) {
             logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
@@ -89,10 +94,10 @@ public class DirectorDAO extends DAO<Director> {
 
     }
 
-
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM directors WHERE id_director=?";
+
+        String query = "DELETE FROM actors WHERE id_actor=?";
         try (Connection connection = Connector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
@@ -104,4 +109,6 @@ public class DirectorDAO extends DAO<Director> {
         }
 
     }
+
+
 }

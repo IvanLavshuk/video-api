@@ -1,7 +1,7 @@
-package example.dao;
+package bsu.rfe.lavshuk.videoArchive.dao;
 
-import example.db.Connector;
-import example.entities.Review;
+import bsu.rfe.lavshuk.videoArchive.db.Connector;
+import bsu.rfe.lavshuk.videoArchive.entity.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +18,12 @@ public class ReviewDAO extends DAO<Review> {
 
     @Override
     public void create(Review review) {
+
+        if(review == null){
+            logger.error("Object :{} is null",review.getClass().getSimpleName());
+            throw new RuntimeException();
+        }
+
         String query = "INSERT INTO reviews (rating,text,id_user,id_movie) VALUES(?,?,?,?)";
         try (Connection connection = Connector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

@@ -1,7 +1,8 @@
-package example.services;
+package bsu.rfe.lavshuk.videoArchive.service;
 
-import example.dao.*;
-import example.entities.Director;
+import bsu.rfe.lavshuk.videoArchive.dao.DirectorDAO;
+
+import bsu.rfe.lavshuk.videoArchive.entity.Director;
 
 public class DirectorService {
     private volatile static DirectorService instance;
