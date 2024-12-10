@@ -16,9 +16,8 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-
         System.out.println("Init UserServlet");
-        userService =  UserService.getInstance();
+        userService = UserService.getInstance();
     }
 
     @Override
@@ -28,32 +27,32 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action=req.getParameter("action");
-        if(action!=null){
-            switch (action){
-                case "register" :
-                    registerUser(req,resp);
+        String action = req.getParameter("action");
+        if (action != null) {
+            switch (action) {
+                case "register":
+                    registerUser(req, resp);
                     break;
-                case "login" :
-                    loginUser(req,resp);
+                case "login":
+                    loginUser(req, resp);
 
             }
         }
 
     }
 
-    private void loginUser(HttpServletRequest req, HttpServletResponse resp){
+    private void loginUser(HttpServletRequest req, HttpServletResponse resp) {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        userService.login(email,password);
+        userService.login(email, password);
     }
 
-    private void  registerUser(HttpServletRequest req, HttpServletResponse resp){
+    private void registerUser(HttpServletRequest req, HttpServletResponse resp) {
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
-        userService.createUser(name,surname,password,email);
+        userService.createUser(name, surname, password, email);
     }
 
     @Override

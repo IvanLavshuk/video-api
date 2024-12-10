@@ -22,6 +22,7 @@ public class UserService {
         return instance;
     }
 
+
     public void createUser(String name, String surname, String password, String email) {
         User user = new User();
         user.setPassword(password);

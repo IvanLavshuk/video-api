@@ -1,9 +1,10 @@
 package bsu.rfe.lavshuk.videoArchive.dao;
 
-import bsu.rfe.lavshuk.videoArchive.entity.Actor;
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
+import bsu.rfe.lavshuk.videoArchive.entity.Actor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,16 +22,19 @@ public class ActorDAO extends DAO<Actor> {
 
     @Override
     public void create(Actor actor) {
-        if(actor==null){
-            logger.error("Object :{} is null",actor.getClass().getSimpleName());
+        if (actor == null) {
+            logger.error("Object :{} is null", actor.getClass().getSimpleName());
             throw new RuntimeException();
         }
 
         String query = "INSERT INTO actors (name,surname,birthdate) VALUES(?,?,?)";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
                 preparedStatement.setString(1, actor.getName());
+
                 preparedStatement.setString(2, actor.getSurname());
+
                 preparedStatement.setString(3, actor.getBirthdate());
 
             }
@@ -45,7 +49,7 @@ public class ActorDAO extends DAO<Actor> {
     public Actor getById(int id) {
         String query = "SELECT * FROM actors WHERE id_actor=?";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -72,7 +76,7 @@ public class ActorDAO extends DAO<Actor> {
     public List<Actor> getAll() {
         String query = "SELECT* FROM actors";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
                     List<Actor> actors = new ArrayList<>();
@@ -98,7 +102,7 @@ public class ActorDAO extends DAO<Actor> {
     public void removeById(int id) {
 
         String query = "DELETE FROM actors WHERE id_actor=?";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()){
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();

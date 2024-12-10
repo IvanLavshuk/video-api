@@ -24,7 +24,7 @@ public class DirectorDAO extends DAO<Director> {
         }
 
         String query = "INSERT INTO directors (name,surname,birthdate) VALUES(?,?,?)";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, director.getName());
                 preparedStatement.setString(2, director.getSurname());
@@ -42,7 +42,7 @@ public class DirectorDAO extends DAO<Director> {
     public Director getById(int id) {
         String query = "SELECT * FROM directors WHERE id_director=?";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
@@ -69,7 +69,7 @@ public class DirectorDAO extends DAO<Director> {
     public List<Director> getAll() {
 
         String query = "SELECT* FROM directors";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
                     List<Director> directors = new ArrayList<>();
@@ -97,7 +97,7 @@ public class DirectorDAO extends DAO<Director> {
     @Override
     public void removeById(int id) {
         String query = "DELETE FROM directors WHERE id_director=?";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();

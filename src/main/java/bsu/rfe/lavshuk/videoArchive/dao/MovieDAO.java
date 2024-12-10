@@ -22,7 +22,7 @@ public class MovieDAO extends DAO<Movie> {
             throw new RuntimeException();
         }
         String query = "INSERT INTO movies (title,genre,country,release_date,id_director) VALUES(?,?,?,?,?)";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, movie.getTitle());
                 preparedStatement.setString(2, movie.getGenre());
@@ -44,7 +44,7 @@ public class MovieDAO extends DAO<Movie> {
 
         String query = "SELECT * FROM movies WHERE id_movie=?";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -72,7 +72,7 @@ public class MovieDAO extends DAO<Movie> {
     public List<Movie> getAll() {
         String query = "SELECT* FROM movies";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
                     List<Movie> movies = new ArrayList<>();
@@ -98,7 +98,7 @@ public class MovieDAO extends DAO<Movie> {
     @Override
     public void removeById(int id) {
         String query = "DELETE FROM movies WHERE id_movie=?";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();

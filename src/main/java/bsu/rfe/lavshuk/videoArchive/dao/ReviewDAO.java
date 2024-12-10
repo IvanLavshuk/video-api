@@ -25,7 +25,7 @@ public class ReviewDAO extends DAO<Review> {
         }
 
         String query = "INSERT INTO reviews (rating,text,id_user,id_movie) VALUES(?,?,?,?)";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setDouble(1, review.getRating());
                 preparedStatement.setString(2, review.getText());
@@ -45,7 +45,7 @@ public class ReviewDAO extends DAO<Review> {
 
         String query = "SELECT id_review,rating,text,id_user,id_movie FROM reviews WHERE id_review=?";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -73,7 +73,7 @@ public class ReviewDAO extends DAO<Review> {
     public List<Review> getAll() {
 
         String query = "SELECT* FROM reviews";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     List<Review> reviews = new ArrayList<>();
@@ -100,7 +100,7 @@ public class ReviewDAO extends DAO<Review> {
     @Override
     public void removeById(int id) {
         String query = "DELETE FROM reviews WHERE id_review=?";
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();

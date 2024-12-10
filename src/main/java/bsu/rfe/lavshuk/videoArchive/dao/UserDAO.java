@@ -24,7 +24,7 @@ public class UserDAO extends DAO<User> {
         }
 
         String query = "INSERT INTO users (name,surname,password,email) VALUES(?,?,?,?)";
-        try (Connection connection = Connector.getConnection()){
+        try (Connection connection = Connector.get()){
             try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
@@ -44,7 +44,7 @@ public class UserDAO extends DAO<User> {
 
         String query = "SELECT id_user,name,surname,password,email FROM users WHERE id_user=?";
 
-        try (Connection connection = Connector.getConnection()){
+        try (Connection connection = Connector.get()){
             try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
                 preparedStatement.setInt(1, id);
                 try(ResultSet resultSet = preparedStatement.executeQuery();){
@@ -72,7 +72,7 @@ public class UserDAO extends DAO<User> {
     public List<User> getAll() {
 
         String query = "SELECT* FROM users";
-        try (Connection connection = Connector.getConnection()){
+        try (Connection connection = Connector.get()){
             try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
                 try(ResultSet resultSet = preparedStatement.executeQuery(query)){
                     List<User> users = new ArrayList<>();
@@ -99,7 +99,7 @@ public class UserDAO extends DAO<User> {
     public void removeById(int id) {
         String query = "DELETE FROM users WHERE id_user=?";
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();
@@ -116,7 +116,7 @@ public class UserDAO extends DAO<User> {
         String query = "SELECT id_user,name,surname,password,email FROM users WHERE email=?";
 
 
-        try (Connection connection = Connector.getConnection()) {
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, email);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
