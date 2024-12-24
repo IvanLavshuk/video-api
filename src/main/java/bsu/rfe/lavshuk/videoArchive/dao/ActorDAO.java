@@ -2,8 +2,6 @@ package bsu.rfe.lavshuk.videoArchive.dao;
 
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
 import bsu.rfe.lavshuk.videoArchive.entity.Actor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,19 +9,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class ActorDAO extends DAO<Actor> {
-    private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(ActorDAO.class.getSimpleName());
 
-    public static void main(String[] args) {
-        logger.info("HELLO");
-    }
 
     @Override
     public void create(Actor actor) {
         if (actor == null) {
-            logger.error("Object :{} is null", actor.getClass().getSimpleName());
+            logger.info("actor is null");
             throw new RuntimeException();
         }
 
@@ -40,7 +36,7 @@ public class ActorDAO extends DAO<Actor> {
             }
 
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
         }
 
     }
@@ -66,7 +62,7 @@ public class ActorDAO extends DAO<Actor> {
             }
 
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -92,7 +88,7 @@ public class ActorDAO extends DAO<Actor> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -102,13 +98,13 @@ public class ActorDAO extends DAO<Actor> {
     public void removeById(int id) {
 
         String query = "DELETE FROM actors WHERE id_actor=?";
-        try (Connection connection = Connector.get()){
+        try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

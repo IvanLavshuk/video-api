@@ -2,8 +2,6 @@ package bsu.rfe.lavshuk.videoArchive.dao;
 
 import bsu.rfe.lavshuk.videoArchive.entity.Movie;
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,14 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MovieDAO extends DAO<Movie> {
-    private static final Logger logger = LoggerFactory.getLogger(MovieDAO.class);
+    private static final Logger logger = Logger.getLogger(MovieDAO.class.getSimpleName());
 
     @Override
     public void create(Movie movie) {
         if(movie == null){
-            logger.error("Object :{} is null",movie.getClass().getSimpleName());
+            logger.info("movie is null");
             throw new RuntimeException();
         }
         String query = "INSERT INTO movies (title,genre,country,release_date,id_director) VALUES(?,?,?,?,?)";
@@ -33,7 +32,7 @@ public class MovieDAO extends DAO<Movie> {
 
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -62,7 +61,7 @@ public class MovieDAO extends DAO<Movie> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -90,7 +89,7 @@ public class MovieDAO extends DAO<Movie> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -104,7 +103,7 @@ public class MovieDAO extends DAO<Movie> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

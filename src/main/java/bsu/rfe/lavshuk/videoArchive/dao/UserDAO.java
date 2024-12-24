@@ -2,9 +2,7 @@ package bsu.rfe.lavshuk.videoArchive.dao;
 
 import bsu.rfe.lavshuk.videoArchive.entity.User;
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +12,12 @@ import java.util.List;
 
 public class UserDAO extends DAO<User> {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+    private static final Logger logger = Logger.getLogger(UserDAO.class.getSimpleName());
     @Override
     public void create(User user) {
 
         if(user == null){
-            logger.error("Object :{} is null",user.getClass().getSimpleName());
+            logger.info("user is null");
             throw new RuntimeException();
         }
 
@@ -33,7 +31,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         }catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -61,7 +59,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         }catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -89,7 +87,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         }catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -105,7 +103,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -114,7 +112,6 @@ public class UserDAO extends DAO<User> {
     public User getByEmail(String email) {
 
         String query = "SELECT id_user,name,surname,password,email FROM users WHERE email=?";
-
 
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -133,7 +130,7 @@ public class UserDAO extends DAO<User> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

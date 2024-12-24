@@ -2,8 +2,6 @@ package bsu.rfe.lavshuk.videoArchive.dao;
 
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
 import bsu.rfe.lavshuk.videoArchive.entity.Review;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,16 +9,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ReviewDAO extends DAO<Review> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReviewDAO.class);
+    private static final Logger logger = Logger.getLogger(MovieDAO.class.getSimpleName());
 
     @Override
     public void create(Review review) {
 
         if(review == null){
-            logger.error("Object :{} is null",review.getClass().getSimpleName());
+            logger.info("review is null");
             throw new RuntimeException();
         }
 
@@ -34,7 +33,7 @@ public class ReviewDAO extends DAO<Review> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -44,7 +43,6 @@ public class ReviewDAO extends DAO<Review> {
     public Review getById(int id) {
 
         String query = "SELECT id_review,rating,text,id_user,id_movie FROM reviews WHERE id_review=?";
-
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
@@ -63,7 +61,7 @@ public class ReviewDAO extends DAO<Review> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -90,7 +88,7 @@ public class ReviewDAO extends DAO<Review> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -106,7 +104,7 @@ public class ReviewDAO extends DAO<Review> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("Error executing query:{}, errormessage: {}", query, e.getMessage());
+            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -32,12 +32,15 @@ public class UserService {
         userDAO.create(user);
     }
 
-    public User login(String email, String password) {
+    public User findByEmail(String email) {
         User user = userDAO.getByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        //return null плохо
-        return null;
+        return user;
     }
+
+
+    public boolean checkPassword(String requestPassword, String userPassword) {
+        return userPassword.equals(requestPassword);
+    }
+
+
 }

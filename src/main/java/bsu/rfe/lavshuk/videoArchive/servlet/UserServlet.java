@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
@@ -23,6 +24,9 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        resp.setContentType("text/html");
+        PrintWriter writer = resp.getWriter();
+        writer.println("<h1>Здраствуй, " +" FirstServlet</h1>");
     }
 
     @Override
@@ -35,16 +39,19 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "login":
                     loginUser(req, resp);
-
+                    break;
             }
+
         }
 
     }
 
-    private void loginUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void loginUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        userService.login(email, password);
+
+        userService.findByEmail(email);
+        resp.sendRedirect("");
     }
 
     private void registerUser(HttpServletRequest req, HttpServletResponse resp) {
@@ -57,7 +64,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        super.destroy();
+
         System.out.println("Destroy UserServlet");
     }
 }

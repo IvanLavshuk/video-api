@@ -1,14 +1,12 @@
 package bsu.rfe.lavshuk.videoArchive.db;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public final class PropertiesUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(Connector.class);
+    private static final Logger logger = Logger.getLogger(Connector.class.getSimpleName());
     private static final Properties prop = new Properties();
 
     private PropertiesUtil() {
