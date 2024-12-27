@@ -10,8 +10,7 @@ public class Movie {
     private String country;
     private String releaseDate;
 
-    private List<Actor> actors;
-    private int idDirector;
+    private int Director;
 
     public Movie(){}
 
@@ -22,23 +21,17 @@ public class Movie {
         this.country = country;
         this.releaseDate = releaseDate;
 
-        this.idDirector = idDirector;
+        this.Director = idDirector;
     }
 
-    public List<Actor> getActors() {
-        return actors;
+
+
+    public int getDirector() {
+        return Director;
     }
 
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
-
-    public int getIdDirector() {
-        return idDirector;
-    }
-
-    public void setIdDirector(int idDirector) {
-        this.idDirector = idDirector;
+    public void setDirector(int director) {
+        this.Director = director;
     }
 
     public int getId() {
@@ -89,8 +82,7 @@ public class Movie {
                 ", genre='" + genre + '\'' +
                 ", country='" + country + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
-                ", actors=" + actors +
-                ", idDirector=" + idDirector +
+                ", idDirector=" + Director +
                 '}';
     }
 
@@ -99,12 +91,12 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return id == movie.id && idDirector == movie.idDirector && title.equals(movie.title) && genre.equals(movie.genre) && country.equals(movie.country) && releaseDate.equals(movie.releaseDate) && actors.equals(movie.actors);
+        return id == movie.id && Director == movie.Director && title.equals(movie.title) && genre.equals(movie.genre) && country.equals(movie.country) && releaseDate.equals(movie.releaseDate) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, genre, country, releaseDate, actors, idDirector);
+        return Objects.hash(id, title, genre, country, releaseDate, Director);
     }
 }
 

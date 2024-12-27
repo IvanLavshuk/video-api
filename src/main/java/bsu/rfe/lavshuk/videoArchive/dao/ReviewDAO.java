@@ -47,17 +47,18 @@ public class ReviewDAO extends DAO<Review> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    Review review = new Review();
-                    review.setId(id);
-                    while (resultSet.next()) {
+
+
+                    if(resultSet.next()) {
+                        Review review = new Review();
                         review.setId(resultSet.getInt("id_review"));
                         review.setRating(resultSet.getDouble("rating"));
                         review.setText(resultSet.getString("text"));
                         review.setUser(new UserDAO().getById(resultSet.getInt("id_user")));
                         review.setMovie(new MovieDAO().getById(resultSet.getInt("id_movie")));
-
+                        return review;
                     }
-                    return review;
+                    return null;
                 }
             }
         } catch (SQLException e) {

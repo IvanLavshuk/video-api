@@ -32,11 +32,11 @@ public class ActorDAO extends DAO<Actor> {
                 preparedStatement.setString(2, actor.getSurname());
 
                 preparedStatement.setString(3, actor.getBirthdate());
-
+                preparedStatement.executeUpdate();
             }
 
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
         }
 
     }
@@ -49,20 +49,20 @@ public class ActorDAO extends DAO<Actor> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    Actor actor = new Actor();
-                    actor.setId(id);
-                    while (resultSet.next()) {
+                    if (resultSet.next()) {
+                        Actor actor = new Actor();
                         actor.setId(resultSet.getInt("id_actor"));
                         actor.setName(resultSet.getString("name"));
                         actor.setSurname(resultSet.getString("surname"));
                         actor.setBirthdate(resultSet.getString("birthdate"));
+                        return actor;
                     }
-                    return actor;
+                    return null;
                 }
             }
 
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -88,7 +88,7 @@ public class ActorDAO extends DAO<Actor> {
                 }
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -104,7 +104,7 @@ public class ActorDAO extends DAO<Actor> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

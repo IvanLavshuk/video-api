@@ -23,6 +23,12 @@ public class DirectorService {
         return instance;
     }
 
+    public boolean isExist(int id){
+        if(directorDAO.getById(id) == null){
+            return true;
+        }
+        return false;
+    }
     public void createDirector(String name, String surname,String birthdate) {
         Director director = new Director();
         director.setName(name);

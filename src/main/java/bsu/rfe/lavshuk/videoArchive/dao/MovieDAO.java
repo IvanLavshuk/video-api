@@ -1,7 +1,7 @@
 package bsu.rfe.lavshuk.videoArchive.dao;
 
-import bsu.rfe.lavshuk.videoArchive.entity.Movie;
 import bsu.rfe.lavshuk.videoArchive.db.Connector;
+import bsu.rfe.lavshuk.videoArchive.entity.Movie;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ public class MovieDAO extends DAO<Movie> {
 
     @Override
     public void create(Movie movie) {
-        if(movie == null){
+        if (movie == null) {
             logger.info("movie is null");
             throw new RuntimeException();
         }
@@ -27,17 +27,43 @@ public class MovieDAO extends DAO<Movie> {
                 preparedStatement.setString(2, movie.getGenre());
                 preparedStatement.setString(3, movie.getCountry());
                 preparedStatement.setString(4, movie.getReleaseDate());
-                preparedStatement.setObject(5, movie.getIdDirector());
+                preparedStatement.setObject(5, movie.getDirector());
                 preparedStatement.executeUpdate();
-
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
     }
 
+    public Movie getByTitle(String title) {
+
+        String query = "SELECT * FROM movies WHERE title=?";
+
+        try (Connection connection = Connector.get()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, title);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        Movie movie = new Movie();
+                        movie.setId(resultSet.getInt("id_movie"));
+                        movie.setTitle(resultSet.getString("title"));
+                        movie.setGenre(resultSet.getString("genre"));
+                        movie.setCountry(resultSet.getString("country"));
+                        movie.setReleaseDate(resultSet.getString("release_date"));
+                        movie.setDirector(resultSet.getInt("id_director"));
+                        return movie;
+                    }
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
     @Override
     public Movie getById(int id) {
 
@@ -47,21 +73,21 @@ public class MovieDAO extends DAO<Movie> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    Movie movie = new Movie();
-                    movie.setId(id);
-                    while (resultSet.next()) {
+                    if (resultSet.next()) {
+                        Movie movie = new Movie();
                         movie.setId(resultSet.getInt("id_movie"));
                         movie.setTitle(resultSet.getString("title"));
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setIdDirector(resultSet.getInt("id_director"));
+                        movie.setDirector(resultSet.getInt("id_director"));
+                        return movie;
                     }
-                    return movie;
+                    return null;
                 }
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -82,14 +108,15 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setIdDirector(resultSet.getInt("id_director"));
+                        movie.setDirector(resultSet.getInt("id_director"));
                         movies.add(movie);
                     }
                     return movies;
                 }
+
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -103,7 +130,7 @@ public class MovieDAO extends DAO<Movie> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());
+            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

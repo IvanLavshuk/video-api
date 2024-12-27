@@ -33,8 +33,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        User user = userDAO.getByEmail(email);
-        return user;
+        return userDAO.getByEmail(email);
     }
 
 

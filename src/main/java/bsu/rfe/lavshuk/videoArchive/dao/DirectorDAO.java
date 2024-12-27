@@ -44,16 +44,18 @@ public class DirectorDAO extends DAO<Director> {
                 preparedStatement.setInt(1, id);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    Director director = new Director();
-                    director.setId(id);
-                    while (resultSet.next()) {
+
+                    if(resultSet.next()) {
+                        Director director = new Director();
                         director.setId(resultSet.getInt("id_director"));
                         director.setName(resultSet.getString("name"));
                         director.setSurname(resultSet.getString("surname"));
                         director.setBirthdate(resultSet.getString("birthdate"));
+                        return director;
                     }
-                    return director;
+                    return null;
                 }
+
             }
         } catch (SQLException e) {
             logger.info("Error executing query:" + query+", errormessage: " + e.getMessage());

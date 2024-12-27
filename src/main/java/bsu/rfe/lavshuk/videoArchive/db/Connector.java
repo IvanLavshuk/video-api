@@ -9,12 +9,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
 public class Connector {
-
     private static final Logger logger = Logger.getLogger(Connector.class.getSimpleName());
-    private static final String URL = "db.url";
-    private static final String USER = "db.user";
-    private static final String PASSWORD = "db.password";
-    private static final String POOL_SIZE = "db.pool.size";
+    private static final String URL = "jdbc:mysql://localhost:3306/videolibrary";
+    private static final String USER = "root";
+    private static final String PASSWORD = "ROOT";
+    private static final String POOL_SIZE = "8";
     private static final int DEFAULT_POOL_SIZE = 10;
     private static BlockingQueue<Connection> pool;
 
@@ -24,6 +23,11 @@ public class Connector {
 
     static {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
             initConnectionPool();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -31,7 +35,8 @@ public class Connector {
     }
 
     private static void initConnectionPool() throws ClassNotFoundException {
-        String poolSize = PropertiesUtil.get(POOL_SIZE);
+        //String poolSize = PropertiesUtil.get(POOL_SIZE);
+        String poolSize = POOL_SIZE;
         int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
         for (int i = 0; i < size; i++) {
@@ -41,7 +46,6 @@ public class Connector {
                     new Class[]{Connection.class},
                     (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) :
                             method.invoke(connection, args));
-
             pool.add(proxyConnection);
         }
 
@@ -56,14 +60,12 @@ public class Connector {
         }
     }
 
-
     public static Connection openConnection() throws ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
         try {
             return DriverManager.getConnection(
-                    PropertiesUtil.get(URL),
-                    PropertiesUtil.get(USER),
-                    PropertiesUtil.get(PASSWORD));
+                    URL,
+                    USER,
+                   PASSWORD);
         } catch (SQLException e) {
             logger.info("Error executing " +" errormessage: " + e.getMessage());
             throw new RuntimeException(e);
