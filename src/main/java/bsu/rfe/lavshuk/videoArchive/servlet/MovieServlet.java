@@ -35,16 +35,16 @@ public class MovieServlet extends HttpServlet {
         List<Movie> movies = movieService.getAll();
         PrintWriter out = resp.getWriter();
         out.println("<html><body>");
-        out.println("<p>" + "Movies : " + "</p>");
+        out.println("<h1>" + "Movies : " + "</h1>");
         int count = 1;
         for (Movie m : movies) {
-            out.println(count++);
-            out.println("<p>" + m.getTitle() + "</p>");
-            out.println("<p>" + "(" + m.getReleaseDate() + ")" + "</p>");
-            out.println("<p>" + m.getGenre() + "</p>");
-            out.println("<p>" + m.getCountry() + "</p>");
+
+            out.println("<td>" + (count++) + "." + m.getTitle() + "</td>");
+            out.println("<td>" + "(" + m.getReleaseDate() + ")" + "</td>");
+            out.println("<td>" + m.getGenre() + "</td>");
+            out.println("<td>" + m.getCountry() + "</td>");
             out.println("<p></p>");
-            out.println("<p></p>");
+
         }
         out.println("</body></html>");
         out.close();

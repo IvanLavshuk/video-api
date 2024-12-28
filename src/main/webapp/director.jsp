@@ -27,8 +27,8 @@
 
 
 <div align=center>
-    <form action="AddingDirector" method="post">
-        <input type="hidden" name="action" value="AddingDirector">
+    <form action="Director" method="post">
+        <input type="hidden" name="action" value="Director">
         <table>
             <tr><td>Name:</td><td><input type="text"  name="name" ></td></tr>
             <tr><td>Surname:</td><td><input type="text"  name="surname" ></td></tr>

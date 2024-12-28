@@ -1,8 +1,9 @@
 package bsu.rfe.lavshuk.videoArchive.service;
 
 import bsu.rfe.lavshuk.videoArchive.dao.DirectorDAO;
-
 import bsu.rfe.lavshuk.videoArchive.entity.Director;
+
+import java.util.List;
 
 public class DirectorService {
     private volatile static DirectorService instance;
@@ -23,18 +24,23 @@ public class DirectorService {
         return instance;
     }
 
-    public boolean isExist(int id){
-        if(directorDAO.getById(id) == null){
+    public boolean isExist(int id) {
+        if (directorDAO.getById(id) == null) {
             return true;
         }
         return false;
     }
-    public void createDirector(String name, String surname,String birthdate) {
+
+    public void createDirector(String name, String surname, String birthdate) {
         Director director = new Director();
         director.setName(name);
         director.setSurname(surname);
         director.setBirthdate(birthdate);
         directorDAO.create(director);
 
+    }
+
+    public List<Director> getAll() {
+        return directorDAO.getAll();
     }
 }

@@ -3,6 +3,8 @@ package bsu.rfe.lavshuk.videoArchive.service;
 import bsu.rfe.lavshuk.videoArchive.dao.ActorDAO;
 import bsu.rfe.lavshuk.videoArchive.entity.Actor;
 
+import java.util.List;
+
 public class ActorService {
     private volatile static ActorService instance;
     private final ActorDAO actorDAO;
@@ -31,5 +33,8 @@ public class ActorService {
 
     }
 
+public List<Actor> getAll(){
+        return actorDAO.getAll();
+}
 
 }

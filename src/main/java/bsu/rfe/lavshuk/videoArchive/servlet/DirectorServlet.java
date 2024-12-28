@@ -2,6 +2,8 @@ package bsu.rfe.lavshuk.videoArchive.servlet;
 
 
 
+import bsu.rfe.lavshuk.videoArchive.entity.Actor;
+import bsu.rfe.lavshuk.videoArchive.entity.Director;
 import bsu.rfe.lavshuk.videoArchive.service.DirectorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,10 +13,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 import static java.lang.System.out;
 
-@WebServlet(name = "DirectorServlet", value = "/AddingDirector")
+@WebServlet(name = "DirectorServlet", value = "/Director")
 public class DirectorServlet extends HttpServlet {
 
     private DirectorService directorService;
@@ -28,7 +32,22 @@ public class DirectorServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        List<Director> directors = directorService.getAll();
+        PrintWriter out = resp.getWriter();
+        out.println("<html><body>");
+        out.println("<h1>" + "Directors : " + "</h1>");
+        int count = 1;
+        for (Director d : directors) {
 
+            out.println("<td>" + (count++) + "." + d.getName() + "</td>");
+            out.println("<td>" + d.getSurname() + "</td>");
+            out.println("<td>" + d.getBirthdate() + "</td>");
+            out.println("<p></p>");
+
+        }
+        out.println("</body></html>");
+        out.close();
     }
 
     @Override

@@ -28,8 +28,8 @@
 
 
 <div align=center>
-    <form action="AddingActor" method="post">
-        <input type="hidden" name="action" value="AddingActor">
+    <form action="Actor" method="post">
+        <input type="hidden" name="action" value="Actor">
         <table>
             <tr><td>Name:</td><td><input type="text"  name="nameA" ></td></tr>
             <tr><td>Surname:</td><td><input type="text"  name="surnameA" ></td></tr>

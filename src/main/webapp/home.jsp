@@ -76,8 +76,8 @@
             <tr><td><a href= "director.jsp">Add director</a></td></tr>
             <tr><td><a href= "review.jsp">Add review</a></td></tr>
             <tr><td><a href= "/FirstVideolibrary_war_exploded/Movie">List of movies</a></td></tr>
-            <tr><td><a href= "login.jsp">List of actors</a></td></tr>
-            <tr><td><a href= "login.jsp">List of directors</a></td></tr>
+            <tr><td><a href= "/FirstVideolibrary_war_exploded/Actor">List of actors</a></td></tr>
+            <tr><td><a href= "/FirstVideolibrary_war_exploded/Director">List of directors</a></td></tr>
         </table>
     </form>
     <td><a href= "login.jsp">Exit</a></td>
