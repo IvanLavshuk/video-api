@@ -34,7 +34,6 @@
             <tr><td>Rating:</td><td><input type="text"  name="rating" ></td></tr>
             <tr><td>Text:</td><td><input type="text"  name="text" ></td></tr>
             <tr><td>Movie:</td><td><input type="text"  name="movie" ></td></tr>
-            <tr><td>Users email:</td><td><input type="email"  name="email" ></td></tr>
             <tr><td><button type="submit">Add review</button></td></tr>
         </table>
     </form>

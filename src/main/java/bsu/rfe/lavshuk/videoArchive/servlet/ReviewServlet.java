@@ -1,9 +1,8 @@
 package bsu.rfe.lavshuk.videoArchive.servlet;
 
-
+import bsu.rfe.lavshuk.videoArchive.entity.User;
 import bsu.rfe.lavshuk.videoArchive.service.MovieService;
 import bsu.rfe.lavshuk.videoArchive.service.ReviewService;
-import bsu.rfe.lavshuk.videoArchive.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,22 +36,23 @@ public class ReviewServlet extends HttpServlet {
         String rating = req.getParameter("rating");
         String text = req.getParameter("text");
         String movie = req.getParameter("movie");
-        String usersEmail = req.getParameter("email");
+        HttpSession session0 = req.getSession();
+
+
         if (rating == null || rating.isEmpty() || text == null || text.isEmpty()
-                || movie == null || movie.isEmpty() || usersEmail == null || usersEmail.isEmpty()
-                || MovieService.getInstance().isExistByTitle(movie) || UserService.getInstance().findByEmail(usersEmail)==null) {
-            HttpSession session = req.getSession();
-            session.setAttribute("incorrect", true);
+                || movie == null || movie.isEmpty()
+                || !MovieService.getInstance().isExistByTitle(movie)
+        ) {
+            session0.setAttribute("incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/review.jsp");
             return;
         }
-
+        User u = (User) session0.getAttribute("USER");
+        session0.removeAttribute("USER");
         double r = Double.parseDouble(rating);
-        reviewService.createReview(r,text,movie,usersEmail);
-        HttpSession session = req.getSession();
-        session.setAttribute("reviewRegistered", true);
+        reviewService.createReview(r, text, movie, u.getEmail());
+        session0.setAttribute("reviewRegistered", true);
         resp.sendRedirect(req.getContextPath() + "/home.jsp");
-
     }
 
 }

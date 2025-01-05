@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
         if (checkPassword) {
             HttpSession session = request.getSession();
             session.setAttribute("user",user.getName()+" "+user.getSurname());
+            session.setAttribute("USER",user);
             response.sendRedirect(request.getContextPath()  +"/home.jsp");
 
         } else {
