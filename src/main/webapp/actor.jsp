@@ -35,7 +35,7 @@
             <tr><td>Surname:</td><td><input type="text"  name="surnameA" ></td></tr>
             <tr><td><p>Year, month ,date : XXXX-XX-XX</p></td></tr>
             <tr><td>Birthdate:</td><td><input type="text"  name="birthdate" ></td></tr>
-            <tr><td><button type="submit">Add actor</button></td></tr>
+            <tr><td><button type="submit">Add actor</button></td><td><a href="home.jsp">Back</a></td></tr>
         </table>
     </form>
 </div>
