@@ -1,6 +1,4 @@
 package bsu.rfe.lavshuk.video.archive.servlet;
-
-import bsu.rfe.lavshuk.video.archive.entity.Movie;
 import bsu.rfe.lavshuk.video.archive.service.DirectorService;
 import bsu.rfe.lavshuk.video.archive.service.MovieService;
 import jakarta.servlet.ServletException;
@@ -41,6 +39,8 @@ public class MovieServlet extends HttpServlet {
         String country = req.getParameter("country");
         String releaseDate = req.getParameter("releaseDate");
         int director = Integer.parseInt(req.getParameter("director"));
+        String direc = req.getParameter("director");
+
         if (title == null || title.isEmpty() || genre == null || genre.isEmpty()
                 || country == null || country.isEmpty() || directorService.isExist(director)) {
             HttpSession session = req.getSession();

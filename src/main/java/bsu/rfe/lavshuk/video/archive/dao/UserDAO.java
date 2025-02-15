@@ -67,7 +67,6 @@ public class UserDAO extends DAO<User> {
             throw new RuntimeException(e);
         }
 
-
     }
 
     @Override

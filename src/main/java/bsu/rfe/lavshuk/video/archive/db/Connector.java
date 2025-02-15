@@ -35,17 +35,14 @@ public class Connector {
     }
 
     private static void initConnectionPool() throws ClassNotFoundException {
-        //String poolSize = PropertiesUtil.get(POOL_SIZE);
+        //String poolSize = PropertiesUtil.get(POOL_SIZE); не работает
         String poolSize = POOL_SIZE;
         int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
         for (int i = 0; i < size; i++) {
             Connection connection = openConnection();
-
-            var proxyConnection = (Connection) Proxy.newProxyInstance(Connector.class.getClassLoader(),
-                    new Class[]{Connection.class},
-                    (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) :
-                            method.invoke(connection, args));
+            var proxyConnection = (Connection) Proxy.newProxyInstance(Connector.class.getClassLoader(), new Class[]{Connection.class},
+                    (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) : method.invoke(connection, args));
             pool.add(proxyConnection);
         }
 
@@ -62,10 +59,7 @@ public class Connector {
 
     public static Connection openConnection() throws ClassNotFoundException {
         try {
-            return DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASSWORD);
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
             logger.info("Error executing " + " errormessage: " + e.getMessage());
             throw new RuntimeException(e);

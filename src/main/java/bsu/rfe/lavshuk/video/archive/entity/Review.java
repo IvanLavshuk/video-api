@@ -13,7 +13,6 @@ public class Review {
     }
 
     public Review(double rating, String text, Movie Movie, User idUser) {
-
         this.rating = rating;
         this.text = text;
         this.movie = Movie;

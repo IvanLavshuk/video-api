@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 public class ActorDAO extends DAO<Actor> {
     private static final Logger logger = Logger.getLogger(ActorDAO.class.getSimpleName());
 
-
     @Override
     public void create(Actor actor) {
         if (actor == null) {

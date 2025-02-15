@@ -30,7 +30,6 @@ public class ActorService {
         actor.setSurname(surname);
         actor.setBirthdate(birthdate);
         actorDAO.create(actor);
-
     }
 
     public List<Actor> getAll() {
