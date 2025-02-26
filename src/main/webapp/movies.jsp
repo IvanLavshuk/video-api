@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="bsu.rfe.lavshuk.video.archive.service.MovieService" %>
 <%@ page import="bsu.rfe.lavshuk.video.archive.dao.MovieDAO" %>
+<%@ page import="bsu.rfe.lavshuk.video.archive.service.DirectorService" %>
 <%--
   Created by IntelliJ IDEA.
   User: Asus
@@ -43,7 +44,7 @@
         </td>
         <td><%="|" + m.getCountry() %>
         </td>
-        <td><%="|" + MovieService.getInstance().getDirector(m.getDirector()) %>
+        <td><%="|" + m.getDirectorFullName() %>
         </td>
     </tr>
 

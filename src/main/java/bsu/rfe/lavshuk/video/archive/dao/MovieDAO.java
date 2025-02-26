@@ -27,7 +27,7 @@ public class MovieDAO extends DAO<Movie> {
                 preparedStatement.setString(2, movie.getGenre());
                 preparedStatement.setString(3, movie.getCountry());
                 preparedStatement.setString(4, movie.getReleaseDate());
-                preparedStatement.setObject(5, movie.getDirector());
+                preparedStatement.setObject(5, movie.getDirector().getId());
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {

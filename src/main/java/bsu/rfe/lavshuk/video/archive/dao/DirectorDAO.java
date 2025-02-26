@@ -38,7 +38,7 @@ public class DirectorDAO extends DAO<Director> {
 
     @Override
     public Director getById(int id) {
-        String query = "SELECT * FROM directors WHERE id_director=?";
+        String query = "SELECT id_director, name, surname, birthdate FROM directors WHERE id_director=?";
 
         try (Connection connection = Connector.get()) {
 
@@ -46,7 +46,6 @@ public class DirectorDAO extends DAO<Director> {
                 preparedStatement.setInt(1, id);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
                     if (resultSet.next()) {
                         Director director = new Director();
                         director.setId(resultSet.getInt("id_director"));
@@ -68,10 +67,10 @@ public class DirectorDAO extends DAO<Director> {
     @Override
     public List<Director> getAll() {
 
-        String query = "SELECT* FROM directors";
+        String query = "SELECT id_director, name, surname, birthdate FROM directors";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     List<Director> directors = new ArrayList<>();
                     while (resultSet.next()) {
                         Director director = new Director();
@@ -93,39 +92,40 @@ public class DirectorDAO extends DAO<Director> {
     }
 
     public Director getByFullName(String name, String surname) {
-        String query = "SELECT id_director, name, surname, birthdate WHERE name = ? AND surname = ?";
-        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery(query)) {
+        String query = "SELECT id_director, name, surname, birthdate FROM directors WHERE name=? AND surname=?";
+        try (Connection connection = Connector.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, surname);
-            if (resultSet.next()) {
-                Director director = new Director();
-                director.setId(resultSet.getInt("id_director"));
-                director.setName(resultSet.getString("name"));
-                director.setSurname(resultSet.getString("surname"));
-                director.setBirthdate(resultSet.getString("birthdate"));
-                return director;
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()){
+                    Director director = new Director();
+                    director.setId(resultSet.getInt("id_director"));
+                    director.setName(resultSet.getString("name"));
+                    director.setSurname(resultSet.getString("surname"));
+                    director.setBirthdate(resultSet.getString("birthdate"));
+                    return director;
+                }
+            }
+                return null;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
 
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
-    }
-
-    @Override
-    public void removeById(int id) {
-        String query = "DELETE FROM directors WHERE id_director = ?";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-                preparedStatement.executeUpdate();
+        @Override
+        public void removeById ( int id){
+            String query = "DELETE FROM directors WHERE id_director = ?";
+            try (Connection connection = Connector.get()) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.executeUpdate();
+                }
+            } catch (SQLException e) {
+                logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
 
+        }
     }
-}
