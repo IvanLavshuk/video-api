@@ -34,7 +34,8 @@
             <tr><td>Country:</td><td><input type="text"  name="country" ></td></tr>
             <tr><td><p>Year, month ,date:XXXX-XX-XX</p></td></tr>
             <tr><td>Release date:</td><td><input type="text"  name="releaseDate" ></td></tr>
-            <tr><td>director</td><td><input type="text"  name="director" ></td></tr>
+            <tr><td>Director's name</td><td><input type="text"  name="directorName" ></td></tr>
+            <tr><td>Director's surname</td><td><input type="text"  name="directorSurname" ></td></tr>
             <tr><td><button type="submit">Add movie</button></td><td><a href="home.jsp">Back</a></td></tr>
         </table>
     </form>

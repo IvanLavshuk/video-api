@@ -8,28 +8,26 @@ public class Movie {
     private String genre;
     private String country;
     private String releaseDate;
-
-    private int Director;
+    private Director Director;
 
     public Movie() {
     }
 
-    public Movie(int id, String title, String genre, String country, String releaseDate, int idDirector) {
+    public Movie(int id, String title, String genre, String country, String releaseDate, Director Director) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.country = country;
         this.releaseDate = releaseDate;
-
-        this.Director = idDirector;
+        this.Director = Director;
     }
 
 
-    public int getDirector() {
+    public Director getDirector() {
         return Director;
     }
 
-    public void setDirector(int director) {
+    public void setDirector(Director director) {
         this.Director = director;
     }
 
@@ -73,6 +71,11 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    public String getDirectorFullName() {
+        return Director.getFullName();
+    }
+
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -81,7 +84,7 @@ public class Movie {
                 ", genre='" + genre + '\'' +
                 ", country='" + country + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
-                ", idDirector=" + Director +
+                ", Director=" + Director +
                 '}';
     }
 
@@ -90,7 +93,7 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return id == movie.id && Director == movie.Director && title.equals(movie.title) && genre.equals(movie.genre) && country.equals(movie.country) && releaseDate.equals(movie.releaseDate);
+        return id == movie.id && title.equals(movie.title) && genre.equals(movie.genre) && country.equals(movie.country) && releaseDate.equals(movie.releaseDate) && Director.equals(movie.Director);
     }
 
     @Override

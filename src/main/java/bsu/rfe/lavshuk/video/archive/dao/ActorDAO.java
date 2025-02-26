@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -22,18 +23,12 @@ public class ActorDAO extends DAO<Actor> {
             throw new RuntimeException();
         }
 
-        String query = "INSERT INTO actors (name,surname,birthdate) VALUES(?,?,?)";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-                preparedStatement.setString(1, actor.getName());
-
-                preparedStatement.setString(2, actor.getSurname());
-
-                preparedStatement.setString(3, actor.getBirthdate());
-                preparedStatement.executeUpdate();
-            }
-
+        String query = "INSERT INTO actors (name, surname, birthdate) VALUES(?, ?, ?)";
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, actor.getName());
+            preparedStatement.setString(2, actor.getSurname());
+            preparedStatement.setString(3, actor.getBirthdate());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
         }
@@ -42,22 +37,22 @@ public class ActorDAO extends DAO<Actor> {
 
     @Override
     public Actor getById(int id) {
-        String query = "SELECT * FROM actors WHERE id_actor=?";
+        String query = "SELECT * FROM actors WHERE id_actor = ?";
 
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        Actor actor = new Actor();
-                        actor.setId(resultSet.getInt("id_actor"));
-                        actor.setName(resultSet.getString("name"));
-                        actor.setSurname(resultSet.getString("surname"));
-                        actor.setBirthdate(resultSet.getString("birthdate"));
-                        return actor;
-                    }
-                    return null;
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Actor actor = new Actor();
+                    actor.setId(resultSet.getInt("id_actor"));
+                    actor.setName(resultSet.getString("name"));
+                    actor.setSurname(resultSet.getString("surname"));
+                    actor.setBirthdate(resultSet.getString("birthdate"));
+                    //return Optional.of(actor);
+                    return actor;
                 }
+                return null;
+
             }
 
         } catch (SQLException e) {

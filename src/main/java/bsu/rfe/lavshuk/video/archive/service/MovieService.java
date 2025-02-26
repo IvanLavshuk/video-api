@@ -25,11 +25,11 @@ public class MovieService {
         return instance;
     }
 
-    public void createMovie(String title, String genre, String country, String releaseDate, int idDirector) {
+    public void createMovie(String title, String genre, String country, String releaseDate, String directorName, String directorSurname) {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
-        movie.setDirector(idDirector);
+        movie.setDirector(new DirectorDAO().getByFullName(directorName,directorSurname));
         movie.setGenre(genre);
         movie.setCountry(country);
         movieDAO.create(movie);
@@ -39,9 +39,6 @@ public class MovieService {
         return movieDAO.getByTitle(title) != null;
     }
 
-    public String getDirector(int id) {
-        return DirectorService.getInstance().getFullNameById(id);
-    }
 
     public List<Movie> getAll() {
         return movieDAO.getAll();

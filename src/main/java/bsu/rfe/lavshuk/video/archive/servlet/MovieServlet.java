@@ -7,10 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+
 
 import static java.lang.System.out;
 
@@ -38,18 +36,19 @@ public class MovieServlet extends HttpServlet {
         String genre = req.getParameter("genre");
         String country = req.getParameter("country");
         String releaseDate = req.getParameter("releaseDate");
-        int director = Integer.parseInt(req.getParameter("director"));
-        String direc = req.getParameter("director");
+        String directorName = req.getParameter("directorName");
+        String directorSurname = req.getParameter("directorSurname");
+
 
         if (title == null || title.isEmpty() || genre == null || genre.isEmpty()
-                || country == null || country.isEmpty() || directorService.isExist(director)) {
+                || country == null || country.isEmpty() || directorService.isExist(directorName, directorSurname)) {
             HttpSession session = req.getSession();
             session.setAttribute("Incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/movie.jsp");
             return;
         }
 
-        movieService.createMovie(title, genre, country, releaseDate, director);
+        movieService.createMovie(title, genre, country, releaseDate, directorName,directorSurname);
         HttpSession session = req.getSession();
         session.setAttribute("movieRegistered", true);
         resp.sendRedirect(req.getContextPath() + "/home.jsp");

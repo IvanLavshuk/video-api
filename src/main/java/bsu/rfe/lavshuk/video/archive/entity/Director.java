@@ -3,7 +3,7 @@ package bsu.rfe.lavshuk.video.archive.entity;
 import java.util.Objects;
 
 public class Director {
-    private int id;
+    private Integer id;
     private String name;
     private String surname;
     private String birthdate;
@@ -36,6 +36,10 @@ public class Director {
 
     public String getSurname() {
         return surname;
+    }
+
+    public String getFullName(){
+        return name + " " +surname;
     }
 
     public void setSurname(String surname) {

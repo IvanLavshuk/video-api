@@ -34,8 +34,7 @@ public class DownloadMovie extends HttpServlet {
 
             for (Movie movie : movies) {
                 writer.write((count++) + "." + movie.getTitle() + "(" + movie.getReleaseDate() + ")"
-                        + ", " + movie.getGenre() + ", " + movie.getCountry() + ", "
-                        + MovieService.getInstance().getDirector(movie.getDirector()));
+                        + ", " + movie.getGenre() + ", " + movie.getCountry() + ", "  + movie.getDirectorFullName());
                 writer.newLine();
                 writer.newLine();
             }

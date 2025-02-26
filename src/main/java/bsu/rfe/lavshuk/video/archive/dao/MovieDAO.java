@@ -52,7 +52,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(resultSet.getInt("id_director"));
+                        movie.setDirector(new DirectorDAO().getById(resultSet.getInt("id_director")));
                         return movie;
                     }
                     return null;
@@ -81,7 +81,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(resultSet.getInt("id_director"));
+                        movie.setDirector(new DirectorDAO().getById(resultSet.getInt("id_director")));
                         return movie;
                     }
                     return null;
@@ -109,7 +109,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(resultSet.getInt("id_director"));
+                        movie.setDirector(new DirectorDAO().getById(resultSet.getInt("id_director")));
                         movies.add(movie);
                     }
                     return movies;

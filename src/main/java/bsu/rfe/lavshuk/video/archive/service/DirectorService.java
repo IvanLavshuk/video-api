@@ -24,8 +24,8 @@ public class DirectorService {
         return instance;
     }
 
-    public boolean isExist(int id) {
-        return directorDAO.getById(id) == null;
+    public boolean isExist(String name, String surname) {
+        return directorDAO.getByFullName(name, surname) == null;
     }
 
     public void createDirector(String name, String surname, String birthdate) {
@@ -35,10 +35,6 @@ public class DirectorService {
         director.setBirthdate(birthdate);
         directorDAO.create(director);
 
-    }
-
-    public String getFullNameById(int id){
-        return directorDAO.getById(id).getName()+" "+directorDAO.getById(id).getSurname();
     }
 
     public List<Director> getAll() {

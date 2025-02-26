@@ -80,7 +80,6 @@ public class DirectorDAO extends DAO<Director> {
                         director.setSurname(resultSet.getString("surname"));
                         director.setBirthdate(resultSet.getString("birthdate"));
                         directors.add(director);
-
                     }
                     return directors;
                 }
@@ -93,10 +92,31 @@ public class DirectorDAO extends DAO<Director> {
 
     }
 
+    public Director getByFullName(String name, String surname) {
+        String query = "SELECT id_director, name, surname, birthdate WHERE name = ? AND surname = ?";
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery(query)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, surname);
+            if (resultSet.next()) {
+                Director director = new Director();
+                director.setId(resultSet.getInt("id_director"));
+                director.setName(resultSet.getString("name"));
+                director.setSurname(resultSet.getString("surname"));
+                director.setBirthdate(resultSet.getString("birthdate"));
+                return director;
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM directors WHERE id_director=?";
+        String query = "DELETE FROM directors WHERE id_director = ?";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
