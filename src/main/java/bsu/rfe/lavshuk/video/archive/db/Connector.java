@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 
 public class Connector {
     private static final Logger logger = LoggerFactory.getLogger(Connector.class);
-    private static final String URL = "jdbc:mysql://localhost:3306/videolibrary";
-    private static final String USER = "root";
-    private static final String PASSWORD = "ROOT";
-    private static final String POOL_SIZE = "8";
-    private static final int DEFAULT_POOL_SIZE = 10;
+    private static final String URL = PropertiesUtil.get("db.url");
+    private static final String USER = PropertiesUtil.get("db.user");
+    private static final String PASSWORD = PropertiesUtil.get("db.password");
+    private static final String POOL_SIZE = PropertiesUtil.get("db.pool.size");
+
     private static BlockingQueue<Connection> pool;
 
 
@@ -25,22 +25,17 @@ public class Connector {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             initConnectionPool();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            logger.error("Failed to load JDBC driver", e);
+            throw new RuntimeException("Failed to load JDBC driver", e);
         }
     }
 
     private static void initConnectionPool() throws ClassNotFoundException {
-        //String poolSize = PropertiesUtil.get(POOL_SIZE); не работает
-        String poolSize = POOL_SIZE;
-        int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
-        pool = new ArrayBlockingQueue<>(size);
-        for (int i = 0; i < size; i++) {
+       int poolSize = Integer.parseInt(POOL_SIZE);
+        pool = new ArrayBlockingQueue<>(poolSize );
+        for (int i = 0; i < poolSize  ; i++) {
             Connection connection = openConnection();
             var proxyConnection = (Connection) Proxy.newProxyInstance(Connector.class.getClassLoader(), new Class[]{Connection.class},
                     (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) : method.invoke(connection, args));

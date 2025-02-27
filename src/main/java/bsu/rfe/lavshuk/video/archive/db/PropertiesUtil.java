@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 public final class PropertiesUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(Connector.class);
-    private static final Properties prop = new Properties();
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+    private static final Properties properties = new Properties();
 
     private PropertiesUtil() {
     }
@@ -18,14 +18,17 @@ public final class PropertiesUtil {
     }
 
     public static String get(String key) {
-        return prop.getProperty(key);
+        return properties.getProperty(key);
     }
 
     private static void loadProperties() {
-        try {
-            prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties"));
+        try (var inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
+            if (inputStream == null) {
+                throw new RuntimeException("File db.properties not found in classpath");
+            }
+            properties.load(inputStream);
         } catch (IOException e) {
-            logger.info(prop.toString());
+            logger.error(properties.toString());
             throw new RuntimeException(e);
         }
     }
