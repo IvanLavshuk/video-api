@@ -10,16 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ActorDAO extends DAO<Actor> {
-    private static final Logger logger = Logger.getLogger(ActorDAO.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class);
 
     @Override
     public void create(Actor actor) {
         if (actor == null) {
-            logger.info("actor is null");
+            logger.error("actor is null");
             throw new RuntimeException();
         }
 
@@ -56,7 +57,7 @@ public class ActorDAO extends DAO<Actor> {
             }
 
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -82,7 +83,7 @@ public class ActorDAO extends DAO<Actor> {
                 }
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -98,7 +99,7 @@ public class ActorDAO extends DAO<Actor> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

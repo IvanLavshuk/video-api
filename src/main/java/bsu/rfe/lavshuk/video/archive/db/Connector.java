@@ -6,10 +6,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Connector {
-    private static final Logger logger = Logger.getLogger(Connector.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(Connector.class);
     private static final String URL = "jdbc:mysql://localhost:3306/videolibrary";
     private static final String USER = "root";
     private static final String PASSWORD = "ROOT";
@@ -52,7 +53,7 @@ public class Connector {
         try {
             return pool.take();
         } catch (InterruptedException e) {
-            logger.info("Error executing " + " errormessage: " + e.getMessage());
+            logger.error("Error executing " + " errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -61,7 +62,7 @@ public class Connector {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            logger.info("Error executing " + " errormessage: " + e.getMessage());
+            logger.error("Error executing " + " errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -9,15 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DirectorDAO extends DAO<Director> {
-    private static final Logger logger = Logger.getLogger(DirectorDAO.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(DirectorDAO.class);
 
     @Override
     public void create(Director director) {
         if (director == null) {
-            logger.info("director is null");
+            logger.error("director is null");
             throw new RuntimeException();
         }
 
@@ -30,7 +31,7 @@ public class DirectorDAO extends DAO<Director> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -59,7 +60,7 @@ public class DirectorDAO extends DAO<Director> {
 
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -85,7 +86,7 @@ public class DirectorDAO extends DAO<Director> {
 
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -123,7 +124,7 @@ public class DirectorDAO extends DAO<Director> {
                     preparedStatement.executeUpdate();
                 }
             } catch (SQLException e) {
-                logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+                logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
                 throw new RuntimeException(e);
             }
 

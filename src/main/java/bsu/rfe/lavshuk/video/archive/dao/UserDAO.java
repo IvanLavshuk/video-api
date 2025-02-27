@@ -9,17 +9,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserDAO extends DAO<User> {
 
-    private static final Logger logger = Logger.getLogger(UserDAO.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     @Override
     public void create(User user) {
 
         if (user == null) {
-            logger.info("user is null");
+            logger.error("user is null");
             throw new RuntimeException();
         }
 
@@ -33,7 +34,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -63,7 +64,7 @@ public class UserDAO extends DAO<User> {
 
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -91,7 +92,7 @@ public class UserDAO extends DAO<User> {
 
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -107,7 +108,7 @@ public class UserDAO extends DAO<User> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
