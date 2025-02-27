@@ -20,7 +20,7 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init UserServlet");
-        userService = UserService.getInstance();
+        userService = UserService.getINSTANCE();
     }
 
     @Override

@@ -33,7 +33,7 @@
         <td>|Director</td>
     </tr>
     <%
-        List<Movie> movies = MovieService.getInstance().getAll();
+        List<Movie> movies = MovieService.getINSTANCE().getAll();
         int count = 1;
         for (Movie m : movies) {
     %>

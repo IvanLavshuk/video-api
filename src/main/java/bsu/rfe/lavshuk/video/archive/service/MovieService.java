@@ -7,29 +7,29 @@ import bsu.rfe.lavshuk.video.archive.entity.Movie;
 import java.util.List;
 
 public class MovieService {
-    private volatile static MovieService instance;
+    private volatile static MovieService INSTANCE;
     private final MovieDAO movieDAO;
 
     private MovieService() {
         movieDAO = MovieDAO.getINSTANCE();
     }
 
-    public static MovieService getInstance() {
-        if (instance == null) {
+    public static MovieService getINSTANCE() {
+        if (INSTANCE == null) {
             synchronized (MovieService.class) {
-                if (instance == null) {
-                    instance = new MovieService();
+                if (INSTANCE == null) {
+                    INSTANCE = new MovieService();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
     public void createMovie(String title, String genre, String country, String releaseDate, String directorName, String directorSurname) {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
-        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName,directorSurname));
+        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName, directorSurname));
         movie.setGenre(genre);
         movie.setCountry(country);
         movieDAO.create(movie);

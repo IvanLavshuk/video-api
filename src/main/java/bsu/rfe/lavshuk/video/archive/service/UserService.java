@@ -4,22 +4,22 @@ import bsu.rfe.lavshuk.video.archive.dao.UserDAO;
 import bsu.rfe.lavshuk.video.archive.entity.User;
 
 public class UserService {
-    private volatile static UserService instance;
+    private volatile static UserService INSTANCE;
     private final UserDAO userDAO;
 
     private UserService() {
         userDAO = UserDAO.getINSTANCE();
     }
 
-    public static UserService getInstance() {
-        if (instance == null) {
+    public static UserService getINSTANCE() {
+        if (INSTANCE == null) {
             synchronized (UserService.class) {
-                if (instance == null) {
-                    instance = new UserService();
+                if (INSTANCE == null) {
+                    INSTANCE = new UserService();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
 

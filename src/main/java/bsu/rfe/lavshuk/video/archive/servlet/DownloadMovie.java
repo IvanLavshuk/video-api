@@ -29,7 +29,7 @@ public class DownloadMovie extends HttpServlet {
         File tempFile = File.createTempFile("movies", ".txt");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            List<Movie> movies = MovieService.getInstance().getAll();
+            List<Movie> movies = MovieService.getINSTANCE().getAll();
             int count = 1;
 
             for (Movie movie : movies) {

@@ -21,7 +21,7 @@ public class DirectorServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init DirectorServlet");
-        directorService = DirectorService.getInstance();
+        directorService = DirectorService.getINSTANCE();
 
     }
 

@@ -22,7 +22,7 @@ public class ReviewServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init ActorServlet");
-        reviewService = ReviewService.getInstance();
+        reviewService = ReviewService.getINSTANCE();
 
     }
 
@@ -41,7 +41,7 @@ public class ReviewServlet extends HttpServlet {
 
         if (rating == null || rating.isEmpty() || text == null || text.isEmpty()
                 || movie == null || movie.isEmpty()
-                || !MovieService.getInstance().isExistByTitle(movie)
+                || !MovieService.getINSTANCE().isExistByTitle(movie)
         ) {
             session0.setAttribute("incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/review.jsp");

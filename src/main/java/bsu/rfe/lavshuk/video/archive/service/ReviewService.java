@@ -6,22 +6,22 @@ import bsu.rfe.lavshuk.video.archive.dao.UserDAO;
 import bsu.rfe.lavshuk.video.archive.entity.Review;
 
 public class ReviewService {
-    private volatile static ReviewService instance;
+    private volatile static ReviewService INSTANCE;
     private final ReviewDAO reviewDAO;
 
     private ReviewService() {
         reviewDAO = ReviewDAO.getINSTANCE();
     }
 
-    public static ReviewService getInstance() {
-        if (instance == null) {
+    public static ReviewService getINSTANCE() {
+        if (INSTANCE == null) {
             synchronized (ReviewService.class) {
-                if (instance == null) {
-                    instance = new ReviewService();
+                if (INSTANCE == null) {
+                    INSTANCE = new ReviewService();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
     public void createReview(double rating, String text, String Movie, String usersEmail) {

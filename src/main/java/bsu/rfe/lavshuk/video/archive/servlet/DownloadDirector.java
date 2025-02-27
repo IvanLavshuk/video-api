@@ -27,7 +27,7 @@ public class DownloadDirector extends HttpServlet {
         File tempFile = File.createTempFile("directors", ".txt");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            List<Director> directors = DirectorService.getInstance().getAll();
+            List<Director> directors = DirectorService.getINSTANCE().getAll();
             int count = 1;
 
             for (Director director : directors) {

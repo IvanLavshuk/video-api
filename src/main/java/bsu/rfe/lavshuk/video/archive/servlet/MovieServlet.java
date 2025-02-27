@@ -21,8 +21,8 @@ public class MovieServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init MovieServlet");
-        movieService = MovieService.getInstance();
-        directorService = DirectorService.getInstance();
+        movieService = MovieService.getINSTANCE();
+        directorService = DirectorService.getINSTANCE();
     }
 
     @Override

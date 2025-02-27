@@ -2,26 +2,25 @@ package bsu.rfe.lavshuk.video.archive.service;
 
 import bsu.rfe.lavshuk.video.archive.dao.DirectorDAO;
 import bsu.rfe.lavshuk.video.archive.entity.Director;
-
 import java.util.List;
 
 public class DirectorService {
-    private volatile static DirectorService instance;
+    private volatile static DirectorService INSTANCE;
     private final DirectorDAO directorDAO;
 
     private DirectorService() {
         directorDAO = DirectorDAO.getINSTANCE();
     }
 
-    public static DirectorService getInstance() {
-        if (instance == null) {
+    public static DirectorService getINSTANCE() {
+        if (INSTANCE == null) {
             synchronized (DirectorService.class) {
-                if (instance == null) {
-                    instance = new DirectorService();
+                if (INSTANCE == null) {
+                    INSTANCE = new DirectorService();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
     public boolean isExist(String name, String surname) {

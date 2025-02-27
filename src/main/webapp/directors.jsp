@@ -32,7 +32,7 @@
         <td>Birthdate</td>
     </tr>
     <%
-        List<Director> directors = DirectorService.getInstance().getAll();
+        List<Director> directors = DirectorService.getINSTANCE().getAll();
         int count = 1;
         for (Director director : directors) {
     %>

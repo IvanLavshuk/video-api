@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         System.out.println("Init UserServlet");
-        userService = UserService.getInstance();
+        userService = UserService.getINSTANCE();
     }
 
 
