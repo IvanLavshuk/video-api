@@ -6,22 +6,21 @@ import bsu.rfe.lavshuk.video.archive.entity.Actor;
 import java.util.List;
 
 public class ActorService {
-    private volatile static ActorService instance;
     private final ActorDAO actorDAO;
 
     private ActorService() {
-        actorDAO = new ActorDAO();
+        actorDAO = ActorDAO.getINSTANCE();
     }
-
-    public static ActorService getInstance() {
-        if (instance == null) {
+    private static volatile  ActorService INSTANCE;
+    public static ActorService getINSTANCE() {
+        if (INSTANCE == null) {
             synchronized (ActorService.class) {
-                if (instance == null) {
-                    instance = new ActorService();
+                if (INSTANCE == null) {
+                    INSTANCE = new ActorService();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
     public void createActor(String name, String surname, String birthdate) {

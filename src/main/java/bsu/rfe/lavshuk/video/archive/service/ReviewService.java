@@ -10,7 +10,7 @@ public class ReviewService {
     private final ReviewDAO reviewDAO;
 
     private ReviewService() {
-        reviewDAO = new ReviewDAO();
+        reviewDAO = ReviewDAO.getINSTANCE();
     }
 
     public static ReviewService getInstance() {
@@ -28,8 +28,8 @@ public class ReviewService {
         Review review = new Review();
         review.setRating(rating);
         review.setText(text);
-        review.setMovie(new MovieDAO().getByTitle(Movie));
-        review.setUser(new UserDAO().getByEmail(usersEmail));
+        review.setMovie(MovieDAO.getINSTANCE().getByTitle(Movie));
+        review.setUser(UserDAO.getINSTANCE().getByEmail(usersEmail));
         reviewDAO.create(review);
     }
 }

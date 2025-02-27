@@ -33,7 +33,7 @@
         <td>Birthdate</td>
     </tr>
     <%
-        List<Actor> actors = ActorService.getInstance().getAll();
+        List<Actor> actors = ActorService.getINSTANCE().getAll();
         int count = 1;
         for (Actor actor : actors) {
     %>

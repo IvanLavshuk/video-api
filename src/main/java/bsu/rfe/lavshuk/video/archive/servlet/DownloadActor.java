@@ -27,7 +27,7 @@ public class DownloadActor extends HttpServlet {
         File tempFile = File.createTempFile("actors", ".txt");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            List<Actor> actors = ActorService.getInstance().getAll();
+            List<Actor> actors = ActorService.getINSTANCE().getAll();
             int count = 1;
 
             for (Actor actor : actors) {

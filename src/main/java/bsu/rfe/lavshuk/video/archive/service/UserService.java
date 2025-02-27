@@ -8,7 +8,7 @@ public class UserService {
     private final UserDAO userDAO;
 
     private UserService() {
-        userDAO = new UserDAO();
+        userDAO = UserDAO.getINSTANCE();
     }
 
     public static UserService getInstance() {

@@ -15,6 +15,18 @@ import org.slf4j.LoggerFactory;
 public class UserDAO extends DAO<User> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+    private static volatile UserDAO INSTANCE;
+    private UserDAO(){}
+    public static UserDAO getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (UserDAO.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new UserDAO();
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
     @Override
     public void create(User user) {

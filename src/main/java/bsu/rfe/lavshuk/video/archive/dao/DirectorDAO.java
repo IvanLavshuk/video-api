@@ -14,7 +14,18 @@ import org.slf4j.LoggerFactory;
 
 public class DirectorDAO extends DAO<Director> {
     private static final Logger logger = LoggerFactory.getLogger(DirectorDAO.class);
-
+    private static volatile DirectorDAO INSTANCE;
+    private DirectorDAO(){}
+    public static DirectorDAO getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (DirectorDAO.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new DirectorDAO();
+                }
+            }
+        }
+        return INSTANCE;
+    }
     @Override
     public void create(Director director) {
         if (director == null) {

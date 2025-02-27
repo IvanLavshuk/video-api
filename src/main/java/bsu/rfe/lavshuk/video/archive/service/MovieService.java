@@ -11,7 +11,7 @@ public class MovieService {
     private final MovieDAO movieDAO;
 
     private MovieService() {
-        movieDAO = new MovieDAO();
+        movieDAO = MovieDAO.getINSTANCE();
     }
 
     public static MovieService getInstance() {
@@ -29,7 +29,7 @@ public class MovieService {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
-        movie.setDirector(new DirectorDAO().getByFullName(directorName,directorSurname));
+        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName,directorSurname));
         movie.setGenre(genre);
         movie.setCountry(country);
         movieDAO.create(movie);

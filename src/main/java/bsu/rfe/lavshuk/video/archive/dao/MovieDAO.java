@@ -14,7 +14,18 @@ import java.util.List;
 
 public class MovieDAO extends DAO<Movie> {
     private static final Logger logger = LoggerFactory.getLogger(MovieDAO.class);
-
+    private static volatile MovieDAO INSTANCE;
+    private MovieDAO(){}
+    public static MovieDAO getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (MovieDAO.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new MovieDAO();
+                }
+            }
+        }
+        return INSTANCE;
+    }
     @Override
     public void create(Movie movie) {
         if (movie == null) {
@@ -53,7 +64,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(new DirectorDAO().getById(resultSet.getInt("id_director")));
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")));
                         return movie;
                     }
                     return null;
@@ -82,7 +93,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(new DirectorDAO().getById (resultSet.getInt("id_director")));
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById (resultSet.getInt("id_director")));
                         return movie;
                     }
                     return null;
@@ -110,7 +121,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(new DirectorDAO().getById(resultSet.getInt("id_director")));
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")));
                         movies.add(movie);
                     }
                     return movies;

@@ -15,6 +15,18 @@ import org.slf4j.LoggerFactory;
 public class ReviewDAO extends DAO<Review> {
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewDAO.class);
+    private static volatile ReviewDAO INSTANCE;
+    private ReviewDAO(){}
+    public static ReviewDAO getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (ReviewDAO.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ReviewDAO();
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
     @Override
     public void create(Review review) {
@@ -55,8 +67,8 @@ public class ReviewDAO extends DAO<Review> {
                         review.setId(resultSet.getInt("id_review"));
                         review.setRating(resultSet.getDouble("rating"));
                         review.setText(resultSet.getString("text"));
-                        review.setUser(new UserDAO().getById(resultSet.getInt("id_user")));
-                        review.setMovie(new MovieDAO().getById(resultSet.getInt("id_movie")));
+                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")));
+                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")));
                         return review;
                     }
                     return null;
@@ -82,8 +94,8 @@ public class ReviewDAO extends DAO<Review> {
                         review.setId(resultSet.getInt("id_review"));
                         review.setRating(resultSet.getDouble("rating"));
                         review.setText(resultSet.getString("text"));
-                        review.setUser(new UserDAO().getById(resultSet.getInt("id_user")));
-                        review.setMovie(new MovieDAO().getById(resultSet.getInt("id_movie")));
+                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")));
+                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")));
                         reviews.add(review);
                     }
                     return reviews;

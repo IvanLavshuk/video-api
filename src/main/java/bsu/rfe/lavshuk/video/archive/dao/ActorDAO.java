@@ -10,12 +10,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import bsu.rfe.lavshuk.video.archive.service.ActorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class ActorDAO extends DAO<Actor> {
     private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class);
+    private static volatile ActorDAO INSTANCE;
+    private ActorDAO(){}
+    public static ActorDAO getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (ActorDAO.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ActorDAO();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+
 
     @Override
     public void create(Actor actor) {

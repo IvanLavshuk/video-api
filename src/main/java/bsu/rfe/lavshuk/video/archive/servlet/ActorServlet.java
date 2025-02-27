@@ -1,7 +1,6 @@
 package bsu.rfe.lavshuk.video.archive.servlet;
 
 
-import bsu.rfe.lavshuk.video.archive.entity.Actor;
 import bsu.rfe.lavshuk.video.archive.service.ActorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,7 +21,7 @@ public class ActorServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init ActorServlet");
-        actorService = ActorService.getInstance();
+        actorService = ActorService.getINSTANCE();
 
     }
 

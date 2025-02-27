@@ -10,7 +10,7 @@ public class DirectorService {
     private final DirectorDAO directorDAO;
 
     private DirectorService() {
-        directorDAO = new DirectorDAO();
+        directorDAO = DirectorDAO.getINSTANCE();
     }
 
     public static DirectorService getInstance() {
