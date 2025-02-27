@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import bsu.rfe.lavshuk.video.archive.service.ActorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +45,7 @@ public class ActorDAO extends DAO<Actor> {
             preparedStatement.setString(3, actor.getBirthdate());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.info("Error executing query:" + query + ", errormessage: " + e.getMessage());
+            logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
         }
 
     }
