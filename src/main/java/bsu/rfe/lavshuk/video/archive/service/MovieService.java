@@ -29,7 +29,7 @@ public class MovieService {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
-        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName, directorSurname));
+        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName, directorSurname).get());
         movie.setGenre(genre);
         movie.setCountry(country);
         movieDAO.create(movie);

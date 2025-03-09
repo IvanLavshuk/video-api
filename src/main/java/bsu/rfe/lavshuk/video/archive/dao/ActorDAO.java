@@ -2,6 +2,8 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.Actor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,14 +12,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class ActorDAO extends DAO<Actor> {
     private static final Logger logger = LoggerFactory.getLogger(ActorDAO.class);
     private static volatile ActorDAO INSTANCE;
-    private ActorDAO(){}
+
+    private ActorDAO() {
+    }
+
     public static ActorDAO getINSTANCE() {
         if (INSTANCE == null) {
             synchronized (ActorDAO.class) {
@@ -28,7 +31,6 @@ public class ActorDAO extends DAO<Actor> {
         }
         return INSTANCE;
     }
-
 
 
     @Override
@@ -51,11 +53,10 @@ public class ActorDAO extends DAO<Actor> {
     }
 
     @Override
-    public Actor getById(int id) {
-        String query = "SELECT * FROM actors WHERE id_actor = ?";
+    public Optional<Actor> getById(int id) {
+        String query = "SELECT id_actor, name, surname, birthdate FROM actors WHERE id_actor = ?";
 
         try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Actor actor = new Actor();
@@ -63,10 +64,9 @@ public class ActorDAO extends DAO<Actor> {
                     actor.setName(resultSet.getString("name"));
                     actor.setSurname(resultSet.getString("surname"));
                     actor.setBirthdate(resultSet.getString("birthdate"));
-                    //return Optional.of(actor);
-                    return actor;
+                    return Optional.of(actor);
                 }
-                return null;
+                return Optional.empty();
 
             }
 
@@ -79,7 +79,7 @@ public class ActorDAO extends DAO<Actor> {
 
     @Override
     public List<Actor> getAll() {
-        String query = "SELECT* FROM actors";
+        String query = "SELECT id_actor, name, surname, birthdate FROM actors";
 
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -106,7 +106,7 @@ public class ActorDAO extends DAO<Actor> {
     @Override
     public void removeById(int id) {
 
-        String query = "DELETE FROM actors WHERE id_actor=?";
+        String query = "DELETE FROM actors WHERE id_actor = ?";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);

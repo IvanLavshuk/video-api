@@ -2,6 +2,8 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,14 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 public class UserDAO extends DAO<User> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
     private static volatile UserDAO INSTANCE;
-    private UserDAO(){}
+
+    private UserDAO() {
+    }
+
     public static UserDAO getINSTANCE() {
         if (INSTANCE == null) {
             synchronized (UserDAO.class) {
@@ -36,7 +40,7 @@ public class UserDAO extends DAO<User> {
             throw new RuntimeException();
         }
 
-        String query = "INSERT INTO users (name,surname,password,email) VALUES(?,?,?,?)";
+        String query = "INSERT INTO users (name, surname, password, email) VALUES(?, ?, ?, ?)";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, user.getName());
@@ -53,9 +57,9 @@ public class UserDAO extends DAO<User> {
     }
 
     @Override
-    public User getById(int id) {
+    public Optional<User> getById(int id) {
 
-        String query = "SELECT id_user,name,surname,password,email FROM users WHERE id_user=?";
+        String query = "SELECT id_user, name, surname, password, email FROM users WHERE id_user = ?";
 
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -69,9 +73,9 @@ public class UserDAO extends DAO<User> {
                         user.setSurname(resultSet.getString("surname"));
                         user.setEmail(resultSet.getString("email"));
                         user.setPassword(resultSet.getString("password"));
-                        return user;
+                        return Optional.of(user);
                     }
-                    return null;
+                    return Optional.empty();
                 }
 
             }
@@ -85,7 +89,7 @@ public class UserDAO extends DAO<User> {
     @Override
     public List<User> getAll() {
 
-        String query = "SELECT* FROM users";
+        String query = "SELECT id_user, name, surname, password, email FROM users";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
@@ -112,7 +116,7 @@ public class UserDAO extends DAO<User> {
 
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM users WHERE id_user=?";
+        String query = "DELETE FROM users WHERE id_user = ?";
 
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -126,9 +130,9 @@ public class UserDAO extends DAO<User> {
 
     }
 
-    public User getByEmail(String email) {
+    public Optional<User> getByEmail(String email) {
 
-        String query = "SELECT id_user,name,surname,password,email FROM users WHERE email=?";
+        String query = "SELECT id_user, name, surname, password, email FROM users WHERE email = ?";
 
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -143,9 +147,9 @@ public class UserDAO extends DAO<User> {
                         user.setSurname(resultSet.getString("surname"));
                         user.setEmail(resultSet.getString("email"));
                         user.setPassword(resultSet.getString("password"));
-                        return user;
+                        return Optional.of(user);
                     }
-                    return null;
+                    return Optional.empty();
                 }
             }
         } catch (SQLException e) {

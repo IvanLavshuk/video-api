@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MovieDAO extends DAO<Movie> {
     private static final Logger logger = LoggerFactory.getLogger(MovieDAO.class);
@@ -64,7 +65,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")));
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")).get());
                         return movie;
                     }
                     return null;
@@ -78,7 +79,7 @@ public class MovieDAO extends DAO<Movie> {
     }
 
     @Override
-    public Movie getById(int id) {
+    public Optional<Movie> getById(int id) {
 
         String query = "SELECT * FROM movies WHERE id_movie=?";
 
@@ -93,10 +94,10 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(DirectorDAO.getINSTANCE().getById (resultSet.getInt("id_director")));
-                        return movie;
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById (resultSet.getInt("id_director")).get());
+                        return Optional.of(movie);
                     }
-                    return null;
+                    return Optional.empty();
                 }
             }
         } catch (SQLException e) {
@@ -121,7 +122,7 @@ public class MovieDAO extends DAO<Movie> {
                         movie.setGenre(resultSet.getString("genre"));
                         movie.setCountry(resultSet.getString("country"));
                         movie.setReleaseDate(resultSet.getString("release_date"));
-                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")));
+                        movie.setDirector(DirectorDAO.getINSTANCE().getById(resultSet.getInt("id_director")).get());
                         movies.add(movie);
                     }
                     return movies;
@@ -136,7 +137,7 @@ public class MovieDAO extends DAO<Movie> {
 
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM movies WHERE id_movie=?";
+        String query = "DELETE FROM movies WHERE id_movie = ?";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);

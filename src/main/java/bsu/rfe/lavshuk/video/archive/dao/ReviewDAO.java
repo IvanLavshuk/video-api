@@ -2,6 +2,8 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.Review;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,14 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 public class ReviewDAO extends DAO<Review> {
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewDAO.class);
     private static volatile ReviewDAO INSTANCE;
-    private ReviewDAO(){}
+
+    private ReviewDAO() {
+    }
+
     public static ReviewDAO getINSTANCE() {
         if (INSTANCE == null) {
             synchronized (ReviewDAO.class) {
@@ -36,7 +40,7 @@ public class ReviewDAO extends DAO<Review> {
             throw new RuntimeException();
         }
 
-        String query = "INSERT INTO reviews (rating,text,id_user,id_movie) VALUES(?,?,?,?)";
+        String query = "INSERT INTO reviews (rating, text, id_user, id_movie) VALUES(?, ?, ?, ?)";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setDouble(1, review.getRating());
@@ -53,9 +57,9 @@ public class ReviewDAO extends DAO<Review> {
     }
 
     @Override
-    public Review getById(int id) {
+    public Optional<Review> getById(int id) {
 
-        String query = "SELECT id_review,rating,text,id_user,id_movie FROM reviews WHERE id_review=?";
+        String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews WHERE id_review = ?";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
@@ -67,11 +71,11 @@ public class ReviewDAO extends DAO<Review> {
                         review.setId(resultSet.getInt("id_review"));
                         review.setRating(resultSet.getDouble("rating"));
                         review.setText(resultSet.getString("text"));
-                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")));
-                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")));
-                        return review;
+                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
+                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
+                        return Optional.of(review);
                     }
-                    return null;
+                    return Optional.empty();
                 }
             }
         } catch (SQLException e) {
@@ -84,7 +88,7 @@ public class ReviewDAO extends DAO<Review> {
     @Override
     public List<Review> getAll() {
 
-        String query = "SELECT* FROM reviews";
+        String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -94,8 +98,8 @@ public class ReviewDAO extends DAO<Review> {
                         review.setId(resultSet.getInt("id_review"));
                         review.setRating(resultSet.getDouble("rating"));
                         review.setText(resultSet.getString("text"));
-                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")));
-                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")));
+                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
+                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
                         reviews.add(review);
                     }
                     return reviews;
@@ -111,7 +115,7 @@ public class ReviewDAO extends DAO<Review> {
 
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM reviews WHERE id_review=?";
+        String query = "DELETE FROM reviews WHERE id_review = ?";
         try (Connection connection = Connector.get()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
