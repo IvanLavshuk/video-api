@@ -39,13 +39,11 @@ public class DirectorDAO extends DAO<Director> {
         }
 
         String query = "INSERT INTO directors (name, surname, birthdate) VALUES(?, ?, ?)";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, director.getName());
-                preparedStatement.setString(2, director.getSurname());
-                preparedStatement.setString(3, director.getBirthdate());
-                preparedStatement.executeUpdate();
-            }
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, director.getName());
+            preparedStatement.setString(2, director.getSurname());
+            preparedStatement.setString(3, director.getBirthdate());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
@@ -57,22 +55,19 @@ public class DirectorDAO extends DAO<Director> {
     public Optional<Director> getById(int id) {
         String query = "SELECT id_director, name, surname, birthdate FROM directors WHERE id_director = ?";
 
-        try (Connection connection = Connector.get()) {
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        Director director = new Director();
-                        director.setId(resultSet.getInt("id_director"));
-                        director.setName(resultSet.getString("name"));
-                        director.setSurname(resultSet.getString("surname"));
-                        director.setBirthdate(resultSet.getString("birthdate"));
-                        return Optional.of(director);
-                    }
-                    return Optional.empty();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Director director = new Director();
+                    director.setId(resultSet.getInt("id_director"));
+                    director.setName(resultSet.getString("name"));
+                    director.setSurname(resultSet.getString("surname"));
+                    director.setBirthdate(resultSet.getString("birthdate"));
+                    return Optional.of(director);
                 }
+                return Optional.empty();
 
             }
         } catch (SQLException e) {
@@ -85,21 +80,18 @@ public class DirectorDAO extends DAO<Director> {
     public List<Director> getAll() {
 
         String query = "SELECT id_director, name, surname, birthdate FROM directors";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    List<Director> directors = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Director director = new Director();
-                        director.setId(resultSet.getInt("id_director"));
-                        director.setName(resultSet.getString("name"));
-                        director.setSurname(resultSet.getString("surname"));
-                        director.setBirthdate(resultSet.getString("birthdate"));
-                        directors.add(director);
-                    }
-                    return directors;
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Director> directors = new ArrayList<>();
+                while (resultSet.next()) {
+                    Director director = new Director();
+                    director.setId(resultSet.getInt("id_director"));
+                    director.setName(resultSet.getString("name"));
+                    director.setSurname(resultSet.getString("surname"));
+                    director.setBirthdate(resultSet.getString("birthdate"));
+                    directors.add(director);
                 }
-
+                return directors;
             }
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
@@ -109,9 +101,8 @@ public class DirectorDAO extends DAO<Director> {
     }
 
     public Optional<Director> getByFullName(String name, String surname) {
-        String query = "SELECT id_director, name, surname, birthdate FROM directors WHERE name = ? AND surname = ?";
-        try (Connection connection = Connector.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+        String query = "SELECT id_director, name, surname, birthdate FROM directors WHERE name = ? AND surname = ?x";
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, surname);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -134,11 +125,9 @@ public class DirectorDAO extends DAO<Director> {
     @Override
     public void removeById(int id) {
         String query = "DELETE FROM directors WHERE id_director = ?";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-                preparedStatement.executeUpdate();
-            }
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);

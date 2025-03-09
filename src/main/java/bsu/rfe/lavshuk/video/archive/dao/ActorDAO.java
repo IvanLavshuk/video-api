@@ -81,21 +81,20 @@ public class ActorDAO extends DAO<Actor> {
     public List<Actor> getAll() {
         String query = "SELECT id_actor, name, surname, birthdate FROM actors";
 
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
-                    List<Actor> actors = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Actor actor = new Actor();
-                        actor.setId(resultSet.getInt("id_actor"));
-                        actor.setName(resultSet.getString("name"));
-                        actor.setSurname(resultSet.getString("surname"));
-                        actor.setBirthdate(resultSet.getString("birthdate"));
-                        actors.add(actor);
-                    }
-                    return actors;
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery(query)) {
+                List<Actor> actors = new ArrayList<>();
+                while (resultSet.next()) {
+                    Actor actor = new Actor();
+                    actor.setId(resultSet.getInt("id_actor"));
+                    actor.setName(resultSet.getString("name"));
+                    actor.setSurname(resultSet.getString("surname"));
+                    actor.setBirthdate(resultSet.getString("birthdate"));
+                    actors.add(actor);
                 }
+                return actors;
             }
+
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
@@ -107,11 +106,10 @@ public class ActorDAO extends DAO<Actor> {
     public void removeById(int id) {
 
         String query = "DELETE FROM actors WHERE id_actor = ?";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, id);
                 preparedStatement.executeUpdate();
-            }
+
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);

@@ -41,14 +41,12 @@ public class ReviewDAO extends DAO<Review> {
         }
 
         String query = "INSERT INTO reviews (rating, text, id_user, id_movie) VALUES(?, ?, ?, ?)";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setDouble(1, review.getRating());
-                preparedStatement.setString(2, review.getText());
-                preparedStatement.setInt(3, review.getUser().getId());
-                preparedStatement.setInt(4, review.getMovie().getId());
-                preparedStatement.executeUpdate();
-            }
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDouble(1, review.getRating());
+            preparedStatement.setString(2, review.getText());
+            preparedStatement.setInt(3, review.getUser().getId());
+            preparedStatement.setInt(4, review.getMovie().getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);
@@ -60,23 +58,20 @@ public class ReviewDAO extends DAO<Review> {
     public Optional<Review> getById(int id) {
 
         String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews WHERE id_review = ?";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-
-                    if (resultSet.next()) {
-                        Review review = new Review();
-                        review.setId(resultSet.getInt("id_review"));
-                        review.setRating(resultSet.getDouble("rating"));
-                        review.setText(resultSet.getString("text"));
-                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
-                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
-                        return Optional.of(review);
-                    }
-                    return Optional.empty();
+                if (resultSet.next()) {
+                    Review review = new Review();
+                    review.setId(resultSet.getInt("id_review"));
+                    review.setRating(resultSet.getDouble("rating"));
+                    review.setText(resultSet.getString("text"));
+                    review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
+                    review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
+                    return Optional.of(review);
                 }
+                return Optional.empty();
             }
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
@@ -89,21 +84,19 @@ public class ReviewDAO extends DAO<Review> {
     public List<Review> getAll() {
 
         String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    List<Review> reviews = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Review review = new Review();
-                        review.setId(resultSet.getInt("id_review"));
-                        review.setRating(resultSet.getDouble("rating"));
-                        review.setText(resultSet.getString("text"));
-                        review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
-                        review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
-                        reviews.add(review);
-                    }
-                    return reviews;
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Review> reviews = new ArrayList<>();
+                while (resultSet.next()) {
+                    Review review = new Review();
+                    review.setId(resultSet.getInt("id_review"));
+                    review.setRating(resultSet.getDouble("rating"));
+                    review.setText(resultSet.getString("text"));
+                    review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
+                    review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
+                    reviews.add(review);
                 }
+                return reviews;
             }
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
@@ -116,11 +109,9 @@ public class ReviewDAO extends DAO<Review> {
     @Override
     public void removeById(int id) {
         String query = "DELETE FROM reviews WHERE id_review = ?";
-        try (Connection connection = Connector.get()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, id);
-                preparedStatement.executeUpdate();
-            }
+        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
             throw new RuntimeException(e);

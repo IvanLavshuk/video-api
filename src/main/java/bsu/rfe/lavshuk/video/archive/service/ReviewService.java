@@ -28,7 +28,7 @@ public class ReviewService {
         Review review = new Review();
         review.setRating(rating);
         review.setText(text);
-        review.setMovie(MovieDAO.getINSTANCE().getByTitle(Movie));
+        review.setMovie(MovieDAO.getINSTANCE().getByTitle(Movie).get());
         review.setUser(UserDAO.getINSTANCE().getByEmail(usersEmail).get());
         reviewDAO.create(review);
     }
