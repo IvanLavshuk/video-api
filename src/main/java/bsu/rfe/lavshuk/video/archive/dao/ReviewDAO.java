@@ -2,6 +2,7 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.Review;
+import bsu.rfe.lavshuk.video.archive.validator.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +15,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReviewDAO extends DAO<Review> {
-
+    private static final String CREATE_REVIEW_QUERY =
+            "INSERT INTO reviews (rating, text, id_user, id_movie) VALUES(?, ?, ?, ?)";
+    private static final String FIND_REVIEW_BY_ID_QUERY =
+            "SELECT id_review, rating, text, id_user, id_movie FROM reviews WHERE id_review = ?";
+    private static final String FIND_ALL_REVIEWS_QUERY =
+            "SELECT id_review, rating, text, id_user, id_movie FROM reviews";
+    private static final String DELETE_REVIEW_QUERY =
+            "DELETE FROM reviews WHERE id_review = ?";
     private static final Logger logger = LoggerFactory.getLogger(ReviewDAO.class);
     private static volatile ReviewDAO INSTANCE;
+    private static final String ID_REVIEW = "id_review";
+    private static final String RATING = "rating";
+    private static final String TEXT = "text";
+    private static final String ID_USER = "id_user";
+    private static final String ID_MOVIE = "id_movie";
 
     private ReviewDAO() {
     }
@@ -37,11 +50,12 @@ public class ReviewDAO extends DAO<Review> {
 
         if (review == null) {
             logger.error("review is null");
-            throw new RuntimeException();
+            throw new DaoException("Review is null!");
         }
 
-        String query = "INSERT INTO reviews (rating, text, id_user, id_movie) VALUES(?, ?, ?, ?)";
-        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        String query = CREATE_REVIEW_QUERY;
+        try (Connection connection = Connector.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, review.getRating());
             preparedStatement.setString(2, review.getText());
             preparedStatement.setInt(3, review.getUser().getId());
@@ -49,58 +63,61 @@ public class ReviewDAO extends DAO<Review> {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw new DaoException("Failed to create review ", e);
         }
 
     }
 
     @Override
-    public Optional<Review> getById(int id) {
-
-        String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews WHERE id_review = ?";
-        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public Optional<Review> findById(int id) {
+        String query = FIND_REVIEW_BY_ID_QUERY;
+        try (Connection connection = Connector.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
                 if (resultSet.next()) {
                     Review review = new Review();
-                    review.setId(resultSet.getInt("id_review"));
-                    review.setRating(resultSet.getDouble("rating"));
-                    review.setText(resultSet.getString("text"));
-                    review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
-                    review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
+                    review.setId(resultSet.getInt(ID_REVIEW));
+                    review.setRating(resultSet.getDouble(RATING));
+                    review.setText(resultSet.getString(TEXT));
+                    Integer idUser = resultSet.getInt(ID_USER);
+                    Integer idMovie = resultSet.getInt(ID_MOVIE);
+                    review.setUser(UserDAO.getINSTANCE().findById(idUser).get());
+                    review.setMovie(MovieDAO.getINSTANCE().findById(idMovie).get());
                     return Optional.of(review);
                 }
                 return Optional.empty();
             }
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw new DaoException("Failed to find review by id");
         }
 
     }
 
     @Override
-    public List<Review> getAll() {
-
-        String query = "SELECT id_review, rating, text, id_user, id_movie FROM reviews";
-        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                List<Review> reviews = new ArrayList<>();
-                while (resultSet.next()) {
-                    Review review = new Review();
-                    review.setId(resultSet.getInt("id_review"));
-                    review.setRating(resultSet.getDouble("rating"));
-                    review.setText(resultSet.getString("text"));
-                    review.setUser(UserDAO.getINSTANCE().getById(resultSet.getInt("id_user")).get());
-                    review.setMovie(MovieDAO.getINSTANCE().getById(resultSet.getInt("id_movie")).get());
-                    reviews.add(review);
-                }
-                return reviews;
+    public List<Review> findAll() {
+        String query = FIND_ALL_REVIEWS_QUERY;
+        try (Connection connection = Connector.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()
+        ) {
+            List<Review> reviews = new ArrayList<>();
+            while (resultSet.next()) {
+                Review review = new Review();
+                review.setId(resultSet.getInt(ID_REVIEW));
+                review.setRating(resultSet.getDouble(RATING));
+                review.setText(resultSet.getString(TEXT));
+                Integer idUser = resultSet.getInt(ID_USER);
+                Integer idMovie = resultSet.getInt(ID_MOVIE);
+                review.setUser(UserDAO.getINSTANCE().findById(idUser).get());
+                review.setMovie(MovieDAO.getINSTANCE().findById(idMovie).get());
+                reviews.add(review);
             }
+            return reviews;
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw new DaoException("Failed to get all reviews", e);
         }
 
 
@@ -108,13 +125,14 @@ public class ReviewDAO extends DAO<Review> {
 
     @Override
     public void removeById(int id) {
-        String query = "DELETE FROM reviews WHERE id_review = ?";
-        try (Connection connection = Connector.get(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        String query = DELETE_REVIEW_QUERY;
+        try (Connection connection = Connector.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw new DaoException("Failed to delete review", e);
         }
     }
 }

@@ -29,18 +29,18 @@ public class MovieService {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
-        movie.setDirector(DirectorDAO.getINSTANCE().getByFullName(directorName, directorSurname).get());
+        movie.setDirector(DirectorDAO.getINSTANCE().findByFullName(directorName, directorSurname).get());
         movie.setGenre(genre);
         movie.setCountry(country);
         movieDAO.create(movie);
     }
 
     public boolean isExistByTitle(String title) {
-        return movieDAO.getByTitle(title) != null;
+        return movieDAO.findByTitle(title) != null;
     }
 
 
     public List<Movie> getAll() {
-        return movieDAO.getAll();
+        return movieDAO.findAll();
     }
 }

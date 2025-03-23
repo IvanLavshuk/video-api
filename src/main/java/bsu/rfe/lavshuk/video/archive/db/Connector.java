@@ -37,8 +37,11 @@ public class Connector {
         pool = new ArrayBlockingQueue<>(poolSize );
         for (int i = 0; i < poolSize  ; i++) {
             Connection connection = openConnection();
-            var proxyConnection = (Connection) Proxy.newProxyInstance(Connector.class.getClassLoader(), new Class[]{Connection.class},
-                    (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) : method.invoke(connection, args));
+            var proxyConnection =
+                    (Connection) Proxy.newProxyInstance(Connector.class.getClassLoader(), new Class[]{Connection.class},
+                    (proxy, method, args) ->
+                            method.getName().equals("close") ?
+                                    pool.add((Connection) proxy) : method.invoke(connection, args));
             pool.add(proxyConnection);
         }
 

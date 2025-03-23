@@ -32,7 +32,7 @@ public class ActorService {
     }
 
     public List<Actor> getAll() {
-        return actorDAO.getAll();
+        return actorDAO.findAll();
     }
 
 }
