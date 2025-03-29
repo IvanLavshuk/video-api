@@ -3,7 +3,7 @@ package bsu.rfe.lavshuk.video.archive.entity;
 import java.util.Objects;
 
 public class Movie {
-    private int id;
+    private Integer id;
     private String title;
     private String genre;
     private String country;

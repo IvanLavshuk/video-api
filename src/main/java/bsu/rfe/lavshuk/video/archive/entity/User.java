@@ -3,7 +3,7 @@ package bsu.rfe.lavshuk.video.archive.entity;
 import java.util.Objects;
 
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String surname;
     private String email;

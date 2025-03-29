@@ -150,7 +150,7 @@
 <div class="container">
     <div class="welcome-message">
         <h1 class="display-4">Home</h1>
-        <h2 class="text-muted">Hello, IVAN LAUSHUK!</h2>
+        <h2 class="text-muted">Hello, <%= user %>!</h2>
     </div>
 
     <div class="actions-list">

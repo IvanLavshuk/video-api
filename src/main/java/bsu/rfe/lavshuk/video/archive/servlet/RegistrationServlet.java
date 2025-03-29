@@ -1,6 +1,7 @@
 package bsu.rfe.lavshuk.video.archive.servlet;
 
 import bsu.rfe.lavshuk.video.archive.service.UserService;
+import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,17 +35,17 @@ public class RegistrationServlet extends HttpServlet {
         String surname = req.getParameter("surname");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
-        if (name == null || name.isEmpty() || surname == null || surname.isEmpty()
-                || password == null || password.isEmpty() || email == null || email.isEmpty()) {
-            HttpSession session = req.getSession();
+        HttpSession session = req.getSession();
+        try {
+            userService.createUser(name, surname, password, email);
+            session.setAttribute("registered", true);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+        } catch (ValidationException e) {
             session.setAttribute("message", true);
             resp.sendRedirect(req.getContextPath() + "/registration.jsp");
-            return;
+
         }
 
-        userService.createUser(name, surname, password, email);
-        HttpSession session = req.getSession();
-        session.setAttribute("registered", true);
-        resp.sendRedirect(req.getContextPath() + "/home.jsp");
+
     }
 }

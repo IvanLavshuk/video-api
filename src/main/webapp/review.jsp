@@ -25,6 +25,28 @@
         session.removeAttribute("incorrect");
     }
 %>
+<%
+    Boolean review1 = (Boolean) session.getAttribute("incorrect movie");
+    if (review1 != null && review1) {
+%>
+<div align=center>
+    <h1>Incorrect movie</h1>
+</div>
+<%
+        session.removeAttribute("incorrect movie");
+    }
+%>
+<%
+    Boolean review2 = (Boolean) session.getAttribute("incorrect rating");
+if(review2 != null && review2){
+%>
+<div align="center">
+    <h1>Incorrect parameter</h1>
+</div>
+<%
+session.removeAttribute("incorrect rating");
+    }
+%>
 
 
 <div align=center>

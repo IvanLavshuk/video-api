@@ -3,8 +3,8 @@ package bsu.rfe.lavshuk.video.archive.entity;
 import java.util.Objects;
 
 public class Review {
-    private int id;
-    private double rating;
+    private Integer id;
+    private Double rating;
     private String text;
     private Movie movie;
     private User user;

@@ -2,6 +2,7 @@ package bsu.rfe.lavshuk.video.archive.servlet;
 
 
 import bsu.rfe.lavshuk.video.archive.service.ActorService;
+import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-
 
 import static java.lang.System.out;
 
@@ -35,20 +35,15 @@ public class ActorServlet extends HttpServlet {
         String name = req.getParameter("nameA");
         String surname = req.getParameter("surnameA");
         String birthdate = req.getParameter("birthdate");
-
-        if (name == null || name.isEmpty() || surname == null || surname.isEmpty()
-                || birthdate == null || birthdate.isEmpty()) {
-            HttpSession session = req.getSession();
+        HttpSession session = req.getSession();
+        try {
+            actorService.createActor(name, surname, birthdate);
+            session.setAttribute("actorRegistered", true);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+        } catch (ValidationException e) {
             session.setAttribute("incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/actor.jsp");
-            return;
         }
-
-        actorService.createActor(name, surname, birthdate);
-        HttpSession session = req.getSession();
-        session.setAttribute("actorRegistered", true);
-        resp.sendRedirect(req.getContextPath() + "/home.jsp");
-
     }
 
 }

@@ -3,6 +3,8 @@ package bsu.rfe.lavshuk.video.archive.servlet;
 import bsu.rfe.lavshuk.video.archive.entity.User;
 import bsu.rfe.lavshuk.video.archive.service.MovieService;
 import bsu.rfe.lavshuk.video.archive.service.ReviewService;
+import bsu.rfe.lavshuk.video.archive.validator.ServiceException;
+import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,23 +38,26 @@ public class ReviewServlet extends HttpServlet {
         String rating = req.getParameter("rating");
         String text = req.getParameter("text");
         String movie = req.getParameter("movie");
-        HttpSession session0 = req.getSession();
+        HttpSession session = req.getSession();
+        User u = (User) session.getAttribute("USER");
 
-
-        if (rating == null || rating.isEmpty() || text == null || text.isEmpty()
-                || movie == null || movie.isEmpty()
-                || !MovieService.getINSTANCE().isExistByTitle(movie)
-        ) {
-            session0.setAttribute("incorrect", true);
+        try{
+            double r = Double.parseDouble(rating);
+            reviewService.createReview(r, text, movie, u.getEmail());
+            session.setAttribute("reviewRegistered", true);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+        }catch (ValidationException e){
+            session.setAttribute("incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/review.jsp");
-            return;
+        }catch (ServiceException e){
+            session.setAttribute("incorrect", true);
+            resp.sendRedirect(req.getContextPath() + "/review.jsp");
+        }catch (NumberFormatException e){
+            session.setAttribute("incorrect", true);
+            resp.sendRedirect(req.getContextPath() + "/review.jsp");
         }
-        User u = (User) session0.getAttribute("USER");
-        session0.removeAttribute("USER");
-        double r = Double.parseDouble(rating);
-        reviewService.createReview(r, text, movie, u.getEmail());
-        session0.setAttribute("reviewRegistered", true);
-        resp.sendRedirect(req.getContextPath() + "/home.jsp");
+
+
     }
 
 }

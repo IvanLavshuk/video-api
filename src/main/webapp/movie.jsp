@@ -25,6 +25,18 @@
         session.removeAttribute("Incorrect");
     }
 %>
+</div>
+<%
+    Boolean movie1 = (Boolean) session.getAttribute("Incorrect director");
+    if (movie1 != null && movie1) {
+%>
+<div align=center>
+    <h1>Incorrect director</h1>
+</div>
+<%
+        session.removeAttribute("Incorrect director");
+    }
+%>
 <div align=center>
     <form action="Movie" method="post">
         <input type="hidden" name="action" value="Movie">

@@ -1,14 +1,17 @@
 package bsu.rfe.lavshuk.video.archive.servlet;
+
 import bsu.rfe.lavshuk.video.archive.service.DirectorService;
 import bsu.rfe.lavshuk.video.archive.service.MovieService;
+import bsu.rfe.lavshuk.video.archive.validator.ServiceException;
+import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 
+import java.io.IOException;
 
 import static java.lang.System.out;
 
@@ -38,20 +41,19 @@ public class MovieServlet extends HttpServlet {
         String releaseDate = req.getParameter("releaseDate");
         String directorName = req.getParameter("directorName");
         String directorSurname = req.getParameter("directorSurname");
+        HttpSession session = req.getSession();
 
-
-        if (title == null || title.isEmpty() || genre == null || genre.isEmpty()
-                || country == null || country.isEmpty() || directorService.isExist(directorName, directorSurname)) {
-            HttpSession session = req.getSession();
+        try {
+            movieService.createMovie(title, genre, country, releaseDate, directorName, directorSurname);
+            session.setAttribute("movieRegistered", true);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+        } catch (ValidationException e) {
             session.setAttribute("Incorrect", true);
             resp.sendRedirect(req.getContextPath() + "/movie.jsp");
-            return;
+        }catch (ServiceException e){
+            session.setAttribute("Incorrect director", true);
+            resp.sendRedirect(req.getContextPath() + "/movie.jsp");
         }
-
-        movieService.createMovie(title, genre, country, releaseDate, directorName,directorSurname);
-        HttpSession session = req.getSession();
-        session.setAttribute("movieRegistered", true);
-        resp.sendRedirect(req.getContextPath() + "/home.jsp");
 
     }
 }
