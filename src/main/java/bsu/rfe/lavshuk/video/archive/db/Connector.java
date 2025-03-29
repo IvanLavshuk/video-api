@@ -8,7 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.PropertiesUtil;
+import bsu.rfe.lavshuk.video.archive.util.PropertiesUtil;
 
 public class Connector {
     private static final Logger logger = LoggerFactory.getLogger(Connector.class);

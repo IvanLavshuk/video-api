@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import util.PasswordUtil;
+import bsu.rfe.lavshuk.video.archive.util.PasswordUtil;
 
 import java.io.IOException;
 
