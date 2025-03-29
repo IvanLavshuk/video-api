@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.PasswordUtil;
 
 import java.io.IOException;
 
@@ -38,8 +39,9 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/registration.jsp");
             return;
         }
-
-        boolean checkPassword = userService.checkPassword(user.getPassword(), password);
+        String passUser = user.getPassword();
+        String hashedPassword = PasswordUtil.hash(passUser);
+        boolean checkPassword = PasswordUtil.checkPassword(password, hashedPassword);
         HttpSession session = request.getSession();
         if (checkPassword) {
             session.setAttribute("user", user.getName() + " " + user.getSurname());

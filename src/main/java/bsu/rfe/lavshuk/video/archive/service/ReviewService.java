@@ -3,7 +3,9 @@ package bsu.rfe.lavshuk.video.archive.service;
 import bsu.rfe.lavshuk.video.archive.dao.MovieDAO;
 import bsu.rfe.lavshuk.video.archive.dao.ReviewDAO;
 import bsu.rfe.lavshuk.video.archive.dao.UserDAO;
+import bsu.rfe.lavshuk.video.archive.entity.Movie;
 import bsu.rfe.lavshuk.video.archive.entity.Review;
+import bsu.rfe.lavshuk.video.archive.entity.User;
 
 public class ReviewService {
     private volatile static ReviewService INSTANCE;
@@ -28,8 +30,10 @@ public class ReviewService {
         Review review = new Review();
         review.setRating(rating);
         review.setText(text);
-        review.setMovie(MovieDAO.getINSTANCE().findByTitle(Movie).get());
-        review.setUser(UserDAO.getINSTANCE().getByEmail(usersEmail).get());
+        Movie movie = MovieDAO.getINSTANCE().findByTitle(Movie).get();
+        review.setMovie(movie);
+        User user =UserDAO.getINSTANCE().getByEmail(usersEmail).get();
+        review.setUser(user);
         reviewDAO.create(review);
     }
 }

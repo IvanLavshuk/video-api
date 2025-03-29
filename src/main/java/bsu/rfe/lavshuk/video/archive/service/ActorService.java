@@ -11,7 +11,9 @@ public class ActorService {
     private ActorService() {
         actorDAO = ActorDAO.getINSTANCE();
     }
-    private static volatile  ActorService INSTANCE;
+
+    private static volatile ActorService INSTANCE;
+
     public static ActorService getINSTANCE() {
         if (INSTANCE == null) {
             synchronized (ActorService.class) {

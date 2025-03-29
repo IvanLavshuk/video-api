@@ -25,7 +25,8 @@ public class MovieService {
         return INSTANCE;
     }
 
-    public void createMovie(String title, String genre, String country, String releaseDate, String directorName, String directorSurname) {
+    public void createMovie(String title, String genre, String country, String releaseDate, String directorName,
+                            String directorSurname) {
         Movie movie = new Movie();
         movie.setReleaseDate(releaseDate);
         movie.setTitle(title);
