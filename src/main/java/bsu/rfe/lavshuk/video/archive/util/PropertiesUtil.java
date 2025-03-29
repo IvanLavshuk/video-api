@@ -1,4 +1,4 @@
-package util;
+package bsu.rfe.lavshuk.video.archive.util;
 
 import java.io.IOException;
 import java.util.Properties;

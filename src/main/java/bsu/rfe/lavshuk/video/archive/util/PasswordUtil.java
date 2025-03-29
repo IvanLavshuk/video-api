@@ -1,4 +1,4 @@
-package util;
+package bsu.rfe.lavshuk.video.archive.util;
 import org.mindrot.jbcrypt.BCrypt;
 public class PasswordUtil {
     public static boolean checkPassword(String requestPassword, String hashedPassword) {
