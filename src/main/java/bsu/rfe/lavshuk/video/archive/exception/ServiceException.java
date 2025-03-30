@@ -1,4 +1,4 @@
-package bsu.rfe.lavshuk.video.archive.validator;
+package bsu.rfe.lavshuk.video.archive.exception;
 
 public class ServiceException extends RuntimeException{
     public ServiceException(String message){

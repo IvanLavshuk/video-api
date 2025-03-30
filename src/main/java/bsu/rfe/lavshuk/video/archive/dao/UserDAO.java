@@ -2,7 +2,7 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.User;
-import bsu.rfe.lavshuk.video.archive.validator.DaoException;
+import bsu.rfe.lavshuk.video.archive.exception.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

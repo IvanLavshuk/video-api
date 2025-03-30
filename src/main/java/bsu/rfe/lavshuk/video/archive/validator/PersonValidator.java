@@ -6,16 +6,16 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActorValidator {
-    private static final Logger logger = LoggerFactory.getLogger(ActorValidator.class);
+public class PersonValidator {
+    private static final Logger logger = LoggerFactory.getLogger(PersonValidator.class);
 
-    public static void validateActorParameters(String name, String surname, String birthdate)
+    public static void validateParameters(String name, String surname, String birthdate)
             throws ValidationException {
         List<String> fields = new ArrayList<>();
         if (name == null || name.isEmpty()) {
             fields.add("name");
         }
-        if (surname == null || name.isEmpty()) {
+        if (surname == null || surname.isEmpty()) {
             fields.add("surname");
         }
         if (birthdate == null || birthdate.isEmpty()) {
@@ -23,7 +23,7 @@ public class ActorValidator {
         }
 
         if (!fields.isEmpty()) {
-            String error = "Actor's parameters are incorrect : " + String.join(",", fields);
+            String error = "Person's parameters are incorrect : " + String.join(",", fields);
             logger.error(error);
             throw new ValidationException(error);
         }

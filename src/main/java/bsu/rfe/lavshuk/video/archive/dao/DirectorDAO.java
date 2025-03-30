@@ -2,7 +2,7 @@ package bsu.rfe.lavshuk.video.archive.dao;
 
 import bsu.rfe.lavshuk.video.archive.db.Connector;
 import bsu.rfe.lavshuk.video.archive.entity.Director;
-import bsu.rfe.lavshuk.video.archive.validator.DaoException;
+import bsu.rfe.lavshuk.video.archive.exception.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class DirectorDAO extends DAO<Director> {
             "SELECT id_director, name, surname, birthdate FROM directors WHERE id_director = ?";
     private static final String FIND_ALL_DIRECTORS_QUERY =
             "SELECT id_director, name, surname, birthdate FROM directors";
-    private static final  String FIND_DIRECTOR_BY_FULL_NAME =
+    private static final String FIND_DIRECTOR_BY_FULL_NAME =
             "SELECT id_director, name, surname, birthdate FROM directors WHERE name = ? AND surname = ?";
     private static final String DELETE_DIRECTOR_QUERY =
             "DELETE FROM directors WHERE id_director = ?";
@@ -88,7 +88,7 @@ public class DirectorDAO extends DAO<Director> {
             }
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new DaoException("Failed to find director by id",e);
+            throw new DaoException("Failed to find director by id", e);
         }
     }
 
@@ -98,21 +98,21 @@ public class DirectorDAO extends DAO<Director> {
         String query = FIND_ALL_DIRECTORS_QUERY;
         try (Connection connection = Connector.get();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
-                List<Director> directors = new ArrayList<>();
-                while (resultSet.next()) {
-                    Director director = new Director();
-                    director.setId(resultSet.getInt(ID_DIRECTOR));
-                    director.setName(resultSet.getString(NAME_DIRECTOR));
-                    director.setSurname(resultSet.getString(SURNAME_DIRECTOR));
-                    director.setBirthdate(resultSet.getString(BIRTHDATE_DIRECTOR));
-                    directors.add(director);
-                }
-                return directors;
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<Director> directors = new ArrayList<>();
+            while (resultSet.next()) {
+                Director director = new Director();
+                director.setId(resultSet.getInt(ID_DIRECTOR));
+                director.setName(resultSet.getString(NAME_DIRECTOR));
+                director.setSurname(resultSet.getString(SURNAME_DIRECTOR));
+                director.setBirthdate(resultSet.getString(BIRTHDATE_DIRECTOR));
+                directors.add(director);
+            }
+            return directors;
 
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new DaoException("Failed to find all directors",e);
+            throw new DaoException("Failed to find all directors", e);
         }
 
     }
@@ -136,7 +136,7 @@ public class DirectorDAO extends DAO<Director> {
             return Optional.empty();
         } catch (SQLException e) {
             logger.error("Error executing query:" + query + ", errormessage: " + e.getMessage());
-            throw new DaoException("Failed to find director by full name",e);
+            throw new DaoException("Failed to find director by full name", e);
         }
 
     }

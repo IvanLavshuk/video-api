@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.List;
 
 @WebServlet(name = "DownloadDirectorServlet", value = "/downloadDirector")
-public class DownloadDirector extends HttpServlet {
+public class DownloadDirectorServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         System.out.println("Init DirectorDownload");

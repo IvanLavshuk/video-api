@@ -14,7 +14,7 @@ import java.util.List;
 import static java.lang.System.out;
 
 @WebServlet(name = "DownloadMovieServlet", value = "/downloadMovie")
-public class DownloadMovie extends HttpServlet {
+public class DownloadMovieServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         out.println("Init DownloadMovie");

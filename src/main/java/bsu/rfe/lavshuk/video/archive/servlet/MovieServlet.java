@@ -2,7 +2,7 @@ package bsu.rfe.lavshuk.video.archive.servlet;
 
 import bsu.rfe.lavshuk.video.archive.service.DirectorService;
 import bsu.rfe.lavshuk.video.archive.service.MovieService;
-import bsu.rfe.lavshuk.video.archive.validator.ServiceException;
+import bsu.rfe.lavshuk.video.archive.exception.ServiceException;
 import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

@@ -2,7 +2,7 @@ package bsu.rfe.lavshuk.video.archive.service;
 
 import bsu.rfe.lavshuk.video.archive.dao.ActorDAO;
 import bsu.rfe.lavshuk.video.archive.entity.Actor;
-import bsu.rfe.lavshuk.video.archive.validator.ActorValidator;
+import bsu.rfe.lavshuk.video.archive.validator.PersonValidator;
 import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class ActorService {
 
     public void createActor(String name, String surname, String birthdate) throws ValidationException {
         try {
-            ActorValidator.validateActorParameters(name, surname, birthdate);
+            PersonValidator.validateParameters(name, surname, birthdate);
         } catch (ValidationException e) {
             logger.error("Failed to create actor. Invalid parameters");
             throw e;

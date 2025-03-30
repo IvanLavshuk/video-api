@@ -4,14 +4,13 @@ import bsu.rfe.lavshuk.video.archive.dao.UserDAO;
 import bsu.rfe.lavshuk.video.archive.entity.User;
 import bsu.rfe.lavshuk.video.archive.validator.UserValidator;
 import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
+import java.util.Optional;
 
 public class UserService {
     private volatile static UserService INSTANCE;
     private final UserDAO userDAO;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserService() {
         userDAO = UserDAO.getINSTANCE();
@@ -48,5 +47,8 @@ public class UserService {
         return userDAO.getByEmail(email).get();
     }
 
+    public Optional<User> getByEmail(String name) {
+        return userDAO.getByEmail(name);
+    }
 
 }

@@ -1,13 +1,12 @@
 package bsu.rfe.lavshuk.video.archive.service;
 
-import bsu.rfe.lavshuk.video.archive.dao.MovieDAO;
+
 import bsu.rfe.lavshuk.video.archive.dao.ReviewDAO;
-import bsu.rfe.lavshuk.video.archive.dao.UserDAO;
 import bsu.rfe.lavshuk.video.archive.entity.Movie;
 import bsu.rfe.lavshuk.video.archive.entity.Review;
 import bsu.rfe.lavshuk.video.archive.entity.User;
 import bsu.rfe.lavshuk.video.archive.validator.ReviewValidator;
-import bsu.rfe.lavshuk.video.archive.validator.ServiceException;
+import bsu.rfe.lavshuk.video.archive.exception.ServiceException;
 import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +43,10 @@ public class ReviewService {
         Review review = new Review();
         review.setRating(rating);
         review.setText(text);
-        Movie movie = MovieDAO.getINSTANCE().findByTitle(movieTitle).
+        Movie movie = MovieService.getINSTANCE().getByTitle(movieTitle).
                 orElseThrow(() -> new ServiceException("Movie from review is not found"));
         review.setMovie(movie);
-        User user = UserDAO.getINSTANCE().getByEmail(usersEmail).
+        User user = UserService.getINSTANCE().getByEmail(usersEmail).
                 orElseThrow(() -> new ServiceException("User from review is not found"));
         review.setUser(user);
         reviewDAO.create(review);
