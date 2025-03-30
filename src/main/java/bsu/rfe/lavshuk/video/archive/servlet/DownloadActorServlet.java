@@ -8,11 +8,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "DownloadActorServlet", value = "/downloadActor")
-public class DownloadActor extends HttpServlet {
+public class DownloadActorServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         System.out.println("Init DownloadActor");
@@ -23,30 +24,18 @@ public class DownloadActor extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setHeader("Content-disposition", "attachment; filename=actors.txt");
 
-
-        File tempFile = File.createTempFile("actors", ".txt");
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (PrintWriter writer =  resp.getWriter()) {
             List<Actor> actors = ActorService.getINSTANCE().getAll();
             int count = 1;
 
             for (Actor actor : actors) {
-                writer.write((count++) + "." + actor.getName() + " " + actor.getSurname()
-                        + ", " + actor.getBirthdate());
-                writer.newLine();
-                writer.newLine();
+                writer.println(count + ". " + actor.getName() + " " + actor.getSurname() + ", " + actor.getBirthdate());
             }
+
+        }catch (Exception e){
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Error generating download file");
         }
 
-        try (InputStream in = new FileInputStream(tempFile);
-             OutputStream out = resp.getOutputStream()) {
-            byte[] buffer = new byte[10000];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-            }
-        }
 
-        tempFile.delete();
     }
 }
