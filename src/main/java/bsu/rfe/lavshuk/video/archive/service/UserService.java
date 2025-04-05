@@ -5,7 +5,6 @@ import bsu.rfe.lavshuk.video.archive.entity.User;
 import bsu.rfe.lavshuk.video.archive.validator.UserValidator;
 import bsu.rfe.lavshuk.video.archive.validator.ValidationException;
 
-
 import java.util.Optional;
 
 public class UserService {
@@ -43,8 +42,8 @@ public class UserService {
         userDAO.create(user);
     }
 
-    public User findByEmail(String email) {
-        return userDAO.getByEmail(email).get();
+    public Optional<User> findByEmail(String email) {
+        return userDAO.getByEmail(email);
     }
 
     public Optional<User> getByEmail(String name) {

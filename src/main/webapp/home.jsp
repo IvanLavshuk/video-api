@@ -18,6 +18,7 @@
                 filter: brightness(100%);
             }
         }
+
         body {
             /* Замените на ваше фоновое изображение */
             background-image: url('https://images.wallpaperscraft.ru/image/single/dom_gory_oblaka_141061_3840x2400.jpg');
@@ -31,6 +32,7 @@
             justify-content: center;
             margin: 0;
         }
+
         .container {
             background: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для контента */
             padding: 30px;
@@ -38,14 +40,17 @@
             text-align: center;
             animation: fadeIn 1.5s ease-in-out;
         }
+
         .welcome-message {
             margin-bottom: 30px;
         }
+
         .actions-list {
             margin: 20px auto;
             width: 80%;
             max-width: 400px;
         }
+
         .actions-list a {
             display: block;
             margin: 15px 0;
@@ -56,13 +61,16 @@
             border-radius: 8px;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
+
         .actions-list a:hover {
             background-color: #0056b3;
             transform: scale(1.05); /* Анимация увеличения при наведении */
         }
+
         .btn-exit {
             margin-top: 20px;
         }
+
         .btn-exit a {
             padding: 10px 20px;
             background-color: #dc3545;
@@ -71,10 +79,12 @@
             border-radius: 8px;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
+
         .btn-exit a:hover {
             background-color: #c82333;
             transform: scale(1.05); /* Анимация увеличения при наведении */
         }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -147,28 +157,29 @@
         <%
         String user = (String) session.getAttribute("user");
     %>
-<div class="container">
-    <div class="welcome-message">
-        <h1 class="display-4">Home</h1>
-        <h2 class="text-muted">Hello, <%= user %>!</h2>
+    <div class="container">
+        <div class="welcome-message">
+            <h1 class="display-4">Home</h1>
+            <h2 class="text-muted">Hello, <%= user %>!</h2>
+        </div>
+
+        <div class="actions-list">
+            <a href="movie.jsp">Add Movie</a>
+            <a href="actor.jsp">Add Actor</a>
+            <a href="director.jsp">Add Director</a>
+            <a href="review.jsp">Add Review</a>
+            <a href="movies.jsp">List of Movies</a>
+            <a href="actors.jsp">List of Actors</a>
+            <a href="directors.jsp">List of Directors</a>
+        </div>
+
+        <div class="btn-exit">
+            <% session.removeAttribute("user");%>
+            <a href="login.jsp">Exit</a>
+        </div>
     </div>
 
-    <div class="actions-list">
-        <a href="movie.jsp">Add Movie</a>
-        <a href="actor.jsp">Add Actor</a>
-        <a href="director.jsp">Add Director</a>
-        <a href="review.jsp">Add Review</a>
-        <a href="movies.jsp">List of Movies</a>
-        <a href="actors.jsp">List of Actors</a>
-        <a href="directors.jsp">List of Directors</a>
-    </div>
-
-    <div class="btn-exit">
-        <a href="login.jsp">Exit</a>
-    </div>
-</div>
-
-<!-- Подключение Bootstrap JS (опционально) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Подключение Bootstrap JS (опционально) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

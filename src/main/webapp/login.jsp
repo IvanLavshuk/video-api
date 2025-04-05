@@ -27,6 +27,7 @@
             justify-content: center;
             margin: 0;
         }
+
         .container {
             background: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон */
             padding: 30px;
@@ -34,19 +35,23 @@
             text-align: center;
             animation: fadeIn 1.5s ease-in-out;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
         }
+
         .form-group input {
             width: 100%;
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .btn-login {
             background-color: #007bff;
             color: white;
@@ -56,23 +61,28 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .btn-login:hover {
             background-color: #0056b3;
         }
+
         .btn-signup {
             color: #007bff;
             text-decoration: none;
             transition: color 0.3s ease;
         }
+
         .btn-signup:hover {
             color: #0056b3;
             text-decoration: underline;
         }
+
         .alert {
             margin: 20px auto;
             width: 80%;
             max-width: 400px;
         }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -88,6 +98,7 @@
 <body>
 <div class="container">
     <h1 class="display-4">Login to Videolibrary</h1>
+
 
     <%
         Boolean checkPassword = (Boolean) session.getAttribute("checkPassword");

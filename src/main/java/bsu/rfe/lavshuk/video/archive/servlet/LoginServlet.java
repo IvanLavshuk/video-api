@@ -2,15 +2,16 @@ package bsu.rfe.lavshuk.video.archive.servlet;
 
 import bsu.rfe.lavshuk.video.archive.entity.User;
 import bsu.rfe.lavshuk.video.archive.service.UserService;
+import bsu.rfe.lavshuk.video.archive.util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import bsu.rfe.lavshuk.video.archive.util.PasswordUtil;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
@@ -33,15 +34,17 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = userService.findByEmail(email);
+        Optional<User> optionalUser = userService.findByEmail(email);
 
-        if (user == null) {
+        if (!optionalUser.isPresent()) {
             response.sendRedirect(request.getContextPath() + "/registration.jsp");
             return;
         }
+        User user = optionalUser.get();
         String passUser = user.getPassword();
         String hashedPassword = PasswordUtil.hash(passUser);
         boolean checkPassword = PasswordUtil.checkPassword(password, hashedPassword);
+
         HttpSession session = request.getSession();
         if (checkPassword) {
             session.setAttribute("user", user.getName() + " " + user.getSurname());
